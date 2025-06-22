@@ -6,8 +6,11 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { Controller, useForm } from "react-hook-form";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import Logo from "../../assets/android-chrome-512x512.png";
+import { useLocation, useNavigate } from "react-router";
+import { useAuthentication } from "@hooks";
+import CONSTANTS from "@ecom/ui/constants";
 
 const WindowContainer = styled.div`
   width: 100vw;
@@ -49,9 +52,11 @@ const Image = styled.img`
   height: 50px;
 `;
 function Password() {
+  const { setPassword } = useAuthentication();
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -59,14 +64,33 @@ function Password() {
       password: "",
     },
   });
+
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
-    console.log(data);
+    setPassword(data, {
+      onSuccess(res) {
+        const resp = res.data;
+        if (resp?.status === CONSTANTS.STATUS.SUCCESS) {
+          navigate(CONSTANTS.ROUTE_PATHS.LOGIN);
+        }
+      },
+    });
   };
 
   const checkIsError = useCallback(
     (key) => Object.keys(errors[key] ?? {})?.length > 0,
     [errors]
   );
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setValue("email", location.state, { shouldDirty: true });
+    () => {
+      setValue("email", "");
+    };
+  }, [location.state, setValue]);
 
   return (
     <>
@@ -100,6 +124,7 @@ function Password() {
                       helperText={
                         checkIsError("email") && "Enter email address"
                       }
+                      disabled
                     />
                   )}
                 />

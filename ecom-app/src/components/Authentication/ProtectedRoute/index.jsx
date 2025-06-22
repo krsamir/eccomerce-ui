@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router";
 import React from "react";
-import { ROLES, STORAGE_KEYS } from "@ecom/ui/constants";
-
+import CONSTANTS from "@ecom/ui/constants";
+const { ROLES, STORAGE_KEYS } = CONSTANTS;
 const storage = window.localStorage;
 
 function ProtectedRoute({ children, hasAuthority = [], ...rest }) {

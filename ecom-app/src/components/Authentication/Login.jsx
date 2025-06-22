@@ -9,7 +9,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useCallback } from "react";
 import Logo from "../../assets/android-chrome-512x512.png";
 import { useNavigate } from "react-router";
-import { ROUTE_PATHS } from "@ecom/ui/constants";
+import CONSTANTS from "@ecom/ui/constants";
+import { useAuthentication } from "@hooks";
 
 const WindowContainer = styled.div`
   width: 100vw;
@@ -61,8 +62,25 @@ function Login() {
       password: "",
     },
   });
+  const { setLogin } = useAuthentication();
+  const storage = window.localStorage;
+  const navigate = useNavigate();
   const onSubmit = (data) => {
-    console.log(data);
+    setLogin(
+      { ...data, userName: data?.email },
+      {
+        onSuccess(res) {
+          const resp = res.data;
+          if (resp?.status === CONSTANTS.STATUS.SUCCESS) {
+            if (resp?.role?.length) {
+              storage.setItem(CONSTANTS.STORAGE_KEYS.ROLE, resp?.role);
+            }
+            storage.setItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN, resp?.token);
+            navigate(CONSTANTS.ROUTE_PATHS.HOME);
+          }
+        },
+      }
+    );
   };
 
   const checkIsError = useCallback(
@@ -70,7 +88,6 @@ function Login() {
     [errors]
   );
 
-  const navigate = useNavigate();
   return (
     <>
       <WindowContainer>
@@ -129,7 +146,9 @@ function Login() {
                 <Button
                   variant="text"
                   className="login"
-                  onClick={() => navigate(ROUTE_PATHS.FORGOT_PASSWORD)}
+                  onClick={() =>
+                    navigate(CONSTANTS.ROUTE_PATHS.FORGOT_PASSWORD)
+                  }
                 >
                   Forgot Password
                 </Button>

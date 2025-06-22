@@ -9,7 +9,8 @@ import { useNavigate } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import { useCallback, useState } from "react";
 import Logo from "../../assets/android-chrome-512x512.png";
-import { ROUTE_PATHS } from "@ecom/ui/constants";
+import CONSTANTS from "@ecom/ui/constants";
+import { useAuthentication } from "@hooks";
 
 const WindowContainer = styled.div`
   width: 100vw;
@@ -51,6 +52,7 @@ const Image = styled.img`
   height: 50px;
 `;
 function ForgotPassword() {
+  const { forgotPassword, verification } = useAuthentication();
   const navigate = useNavigate();
   const {
     control,
@@ -59,12 +61,30 @@ function ForgotPassword() {
   } = useForm({
     defaultValues: {
       email: "",
-      otp: "",
+      token: "",
     },
   });
   const onSubmit = (data) => {
-    console.log(data);
-    setIsEmailSent(true);
+    if (data?.token) {
+      verification(data, {
+        onSuccess(res) {
+          const resp = res.data;
+          console.info(data);
+          if (resp?.status === CONSTANTS.STATUS.SUCCESS) {
+            navigate(CONSTANTS.ROUTE_PATHS.PASSWORD, { state: data?.email });
+          }
+        },
+      });
+    } else {
+      forgotPassword(data, {
+        onSuccess(res) {
+          const resp = res.data;
+          if (resp?.status === CONSTANTS.STATUS.SUCCESS) {
+            setIsEmailSent(true);
+          }
+        },
+      });
+    }
   };
 
   const checkIsError = useCallback(
@@ -112,17 +132,17 @@ function ForgotPassword() {
                 />
                 {isEmailSent && (
                   <Controller
-                    name="otp"
+                    name="token"
                     control={control}
                     render={({ field }) => (
                       <TextField
-                        id="otp"
+                        id="token"
                         label="OTP"
                         variant="filled"
                         fullWidth
                         {...field}
-                        error={checkIsError("otp")}
-                        helperText={checkIsError("otp") && "Enter OTP"}
+                        error={checkIsError("token")}
+                        helperText={checkIsError("token") && "Enter OTP"}
                       />
                     )}
                   />
@@ -133,7 +153,7 @@ function ForgotPassword() {
                 <Button
                   variant="text"
                   className="login"
-                  onClick={() => navigate(ROUTE_PATHS.LOGIN)}
+                  onClick={() => navigate(CONSTANTS.ROUTE_PATHS.LOGIN)}
                 >
                   Go to Login
                 </Button>

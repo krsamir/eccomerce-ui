@@ -5,7 +5,7 @@ const ForgotPassword = lazy(() => import("@auth/ForgotPassword"));
 const Login = lazy(() => import("@auth/Login"));
 const Password = lazy(() => import("@auth/Password"));
 const ProtectedRoute = lazy(() => import("@auth/ProtectedRoute"));
-import { ROUTE_PATHS } from "@ecom/ui/constants";
+import CONSTANTS from "@ecom/ui/constants";
 
 const LoginComponent = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const LoginComponent = () => {
     <React.Fragment>
       <Button
         variant="contained"
-        onClick={() => navigate(ROUTE_PATHS.FORGOT_PASSWORD)}
+        onClick={() => navigate(CONSTANTS.ROUTE_PATHS.FORGOT_PASSWORD)}
       >
         Navigate to Forget Password
       </Button>
@@ -22,7 +22,7 @@ const LoginComponent = () => {
 };
 const router = createBrowserRouter([
   {
-    path: ROUTE_PATHS.HOME,
+    path: CONSTANTS.ROUTE_PATHS.HOME,
     element: (
       <ProtectedRoute>
         <LoginComponent />,
@@ -30,15 +30,15 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: ROUTE_PATHS.FORGOT_PASSWORD,
+    path: CONSTANTS.ROUTE_PATHS.FORGOT_PASSWORD,
     element: <ForgotPassword />,
   },
   {
-    path: ROUTE_PATHS.PASSWORD,
+    path: CONSTANTS.ROUTE_PATHS.PASSWORD,
     element: <Password />,
   },
   {
-    path: ROUTE_PATHS.LOGIN,
+    path: CONSTANTS.ROUTE_PATHS.LOGIN,
     element: <Login />,
   },
 ]);

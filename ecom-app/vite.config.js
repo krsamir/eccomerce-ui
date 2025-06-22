@@ -9,9 +9,16 @@ const __dirname = path.dirname(__filename);
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      "/api": "http://localhost:5050",
+    },
+  },
   resolve: {
     alias: {
       "@auth": path.join(__dirname, "./src/components/Authentication"),
+      "@api": path.join(__dirname, "./src/api/index.js"),
+      "@hooks": path.join(__dirname, "./src/hooks/index.js"),
     },
   },
 });

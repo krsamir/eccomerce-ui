@@ -1,0 +1,25 @@
+{
+  "name": "eccomerce-ui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "ecom-app",
+    "ecom-ui"
+  ],
+  "scripts": {
+    "dev": "yarn workspace ecom-app dev",
+    "build": "yarn workspace ecom-app build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krsamir/eccomerce-ui.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krsamir/eccomerce-ui/issues"
+  },
+  "homepage": "https://github.com/krsamir/eccomerce-ui#readme",
+  "description": ""
+}

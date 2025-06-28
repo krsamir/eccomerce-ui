@@ -2,8 +2,9 @@ import styled from "@emotion/styled";
 import React from "react";
 import NavBar from "./Navbar";
 import CONSTANTS from "@ecom/ui/constants";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { Card as MCard } from "@mui/material";
+import { getRole } from "@utils";
 
 const FullWidthContainer = styled.div`
   display: flex;
@@ -35,7 +36,6 @@ const Card = styled(MCard)`
 `;
 
 function Home() {
-  const location = useLocation();
   const navigate = useNavigate();
 
   return (
@@ -43,14 +43,13 @@ function Home() {
       <NavBar />
       <FullWidthContainer>
         <LeftContainer>
-          {(
-            CONSTANTS.APP_CONSTANTS[CONSTANTS.ROLE_NAME(location?.state?.role)]
-              ?.SIDEBAR ?? []
-          )?.map(({ id, name, route }) => (
-            <CardWrapper key={id}>
-              <Card onClick={() => navigate(route)}>{name}</Card>
-            </CardWrapper>
-          ))}
+          {(CONSTANTS.APP_CONSTANTS[getRole()]?.SIDEBAR ?? [])?.map(
+            ({ id, name, route }) => (
+              <CardWrapper key={id}>
+                <Card onClick={() => navigate(route)}>{name}</Card>
+              </CardWrapper>
+            )
+          )}
         </LeftContainer>
         <RightContainer>
           <Outlet />

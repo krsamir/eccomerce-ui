@@ -21,6 +21,8 @@ export default defineConfig({
       "@hooks": path.join(__dirname, "./src/hooks/index.js"),
       "@home": path.join(__dirname, "./src/components/Home"),
       "@assets": path.join(__dirname, "./src/assets"),
+      "@suadmin": path.join(__dirname, "./src/components/SuperAdmin"),
+      "@utils": path.join(__dirname, "./src/utils"),
     },
   },
 });

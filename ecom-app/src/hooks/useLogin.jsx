@@ -30,9 +30,7 @@ const useAuthentication = () => {
           storage.setItem(CONSTANTS.STORAGE_KEYS.ROLE, resp?.role);
         }
         storage.setItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN, resp?.token);
-        navigate(CONSTANTS.ROUTE_PATHS.HOME, {
-          state: { role: resp?.role?.length > 0 ? resp?.role[0] : "" },
-        });
+        navigate(CONSTANTS.ROUTE_PATHS.HOME);
       }
     },
   });

@@ -14,6 +14,7 @@ const CONSTANTS_VAL = {
 };
 
 const ROLE_MAP = new Map();
+const ROLE_BY_NAME_MAP = new Map();
 const ROLES = [
   {
     id: "91b5a4d7-4187-4864-88fa-a1f4207199df",
@@ -36,16 +37,24 @@ ROLES.map(({ id, name }) => {
   ROLE_MAP.set(id, name);
 });
 
-const storage = window?.localStorage;
-const roleKey = storage.getItem(CONSTANTS_VAL.STORAGE_KEYS.ROLE);
+ROLES.map(({ id, name }) => {
+  ROLE_BY_NAME_MAP.set(name, id);
+});
+
+const ROLES_NAME = {
+  SUPER_ADMIN: "SUPER_ADMIN",
+  ADMIN: "ADMIN",
+  MANAGER: "MANAGER",
+  DELIVERY_PARTNER: "DELIVERY_PARTNER",
+};
 
 const CONSTANTS = Object.freeze({
   ...CONSTANTS_VAL,
   ROLES,
   ROLE_MAP,
   APP_CONSTANTS,
-  ROLE_NAME: (role) =>
-    role ? ROLE_MAP.get(role) : ROLE_MAP.get(roleKey) ?? "",
+  ROLE_BY_NAME_MAP,
+  ROLES_NAME,
 });
 
 export default CONSTANTS;

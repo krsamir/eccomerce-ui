@@ -2,6 +2,7 @@
   "compilerOptions": {
     "paths": {
       "@auth": ["./src/components/Authentication"],
+      "@home": ["./src/components/Home"],
       "@api": ["./src/api/index.js"],
       "@hooks": ["./src/hooks/index.js"]
     }

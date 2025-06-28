@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "dev": "yarn workspace ecom-app dev",
+    "dev:noopen": "yarn workspace ecom-app dev:noopen",
     "build": "yarn workspace ecom-app build"
   },
   "repository": {

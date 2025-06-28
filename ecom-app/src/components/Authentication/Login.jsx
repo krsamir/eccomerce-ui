@@ -63,25 +63,9 @@ function Login() {
     },
   });
   const { setLogin } = useAuthentication();
-  const storage = window.localStorage;
+
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    setLogin(
-      { ...data, userName: data?.email },
-      {
-        onSuccess(res) {
-          const resp = res.data;
-          if (resp?.status === CONSTANTS.STATUS.SUCCESS) {
-            if (resp?.role?.length) {
-              storage.setItem(CONSTANTS.STORAGE_KEYS.ROLE, resp?.role);
-            }
-            storage.setItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN, resp?.token);
-            navigate(CONSTANTS.ROUTE_PATHS.HOME);
-          }
-        },
-      }
-    );
-  };
+  const onSubmit = (data) => setLogin({ ...data, userName: data?.email });
 
   const checkIsError = useCallback(
     (key) => Object.keys(errors[key] ?? {})?.length > 0,
@@ -103,7 +87,7 @@ function Login() {
                   gutterBottom
                   sx={{ display: "block", textAlign: "center" }}
                 >
-                  Set Password
+                  Login
                 </Typography>
                 <Controller
                   name="email"

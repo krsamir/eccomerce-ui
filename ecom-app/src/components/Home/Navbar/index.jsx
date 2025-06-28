@@ -8,8 +8,8 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
-  background-color: aliceblue;
-  padding: 10px 5px;
+  background-color: #00416a5d;
+  height: 60px;
   box-sizing: border-box;
   position: sticky;
   z-index: 999;
@@ -24,15 +24,17 @@ const ImageContainer = styled.img`
   width: 40px;
   height: 40px;
   margin: 0 10px;
+  cursor: pointer;
 `;
 const RightContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  margin-right: 10px;
 `;
+
 const storage = window?.localStorage;
-const roleKey = storage.getItem(CONSTANTS.STORAGE_KEYS.ROLE);
 
 function NavBar() {
   const handleLogout = () => {
@@ -49,9 +51,11 @@ function NavBar() {
           <ImageContainer src={Logo} />
         </LeftContainer>
         <RightContainer>
-          <Button variant="contained">
-            {(CONSTANTS.ROLE_MAP.get(roleKey) ?? "")?.replace("_", " ")}
-          </Button>
+          {CONSTANTS.ROLE_NAME?.length > 0 && (
+            <Button variant="contained">
+              {(CONSTANTS.ROLE_NAME ?? "")?.replace("_", " ")}
+            </Button>
+          )}
           <Button variant="contained" onClick={() => handleLogout()}>
             Logout
           </Button>

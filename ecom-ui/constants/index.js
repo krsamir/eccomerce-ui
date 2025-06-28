@@ -1,10 +1,8 @@
+import ROUTES from "./routeConstants.js";
+import { APP_CONSTANTS } from "./appConstants.js";
+
 const CONSTANTS_VAL = {
-  ROUTE_PATHS: {
-    HOME: "/",
-    LOGIN: "/login",
-    FORGOT_PASSWORD: "/forgot-password",
-    PASSWORD: "/password",
-  },
+  ROUTE_PATHS: ROUTES,
   STORAGE_KEYS: {
     ROLE: "identity",
     ACCESS_TOKEN: "access_token",
@@ -38,10 +36,15 @@ ROLES.map(({ id, name }) => {
   ROLE_MAP.set(id, name);
 });
 
+const storage = window?.localStorage;
+const roleKey = storage.getItem(CONSTANTS_VAL.STORAGE_KEYS.ROLE);
+
 const CONSTANTS = Object.freeze({
   ...CONSTANTS_VAL,
   ROLES,
   ROLE_MAP,
+  APP_CONSTANTS,
+  ROLE_NAME: ROLE_MAP.get(roleKey) ?? "",
 });
 
 export default CONSTANTS;

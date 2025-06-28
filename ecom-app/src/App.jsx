@@ -16,6 +16,7 @@ function App() {
       primary: {
         main: "#00416A",
         contrastText: "#fff",
+        // 00416a5d
       },
     },
   });

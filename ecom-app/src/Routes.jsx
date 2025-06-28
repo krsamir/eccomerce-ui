@@ -1,6 +1,5 @@
-import { createBrowserRouter, RouterProvider, useNavigate } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import React, { lazy, Suspense } from "react";
-import { Button } from "@mui/material";
 const ForgotPassword = lazy(() => import("@auth/ForgotPassword"));
 const Login = lazy(() => import("@auth/Login"));
 const Password = lazy(() => import("@auth/Password"));
@@ -8,19 +7,6 @@ const ProtectedRoute = lazy(() => import("@auth/ProtectedRoute"));
 const Home = lazy(() => import("@home"));
 import CONSTANTS from "@ecom/ui/constants";
 
-const LoginComponent = () => {
-  const navigate = useNavigate();
-  return (
-    <React.Fragment>
-      <Button
-        variant="contained"
-        onClick={() => navigate(CONSTANTS.ROUTE_PATHS.FORGOT_PASSWORD)}
-      >
-        Navigate to Forget Password
-      </Button>
-    </React.Fragment>
-  );
-};
 const router = createBrowserRouter([
   {
     path: CONSTANTS.ROUTE_PATHS.HOME,

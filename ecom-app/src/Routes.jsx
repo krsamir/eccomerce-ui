@@ -9,6 +9,7 @@ import CONSTANTS from "@ecom/ui/constants";
 import { Loader } from "@ecom/ui";
 import { NotFound } from "@ecom/ui";
 const SuperAdminHome = lazy(() => import("@suadmin"));
+const Location = lazy(() => import("@suadmin/Location"));
 const router = createBrowserRouter([
   {
     path: CONSTANTS.ROUTE_PATHS.HOME,
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.LOCATION}`,
-            element: <>Location</>,
+            element: <Location />,
           },
         ],
       },

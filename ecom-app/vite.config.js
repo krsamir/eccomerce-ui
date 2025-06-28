@@ -20,6 +20,7 @@ export default defineConfig({
       "@api": path.join(__dirname, "./src/api/index.js"),
       "@hooks": path.join(__dirname, "./src/hooks/index.js"),
       "@home": path.join(__dirname, "./src/components/Home"),
+      "@assets": path.join(__dirname, "./src/assets"),
     },
   },
 });

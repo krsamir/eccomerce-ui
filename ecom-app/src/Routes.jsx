@@ -6,6 +6,7 @@ const Password = lazy(() => import("@auth/Password"));
 const ProtectedRoute = lazy(() => import("@auth/ProtectedRoute"));
 const Home = lazy(() => import("@home"));
 import CONSTANTS from "@ecom/ui/constants";
+import { Loader } from "@ecom/ui";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
 function Routes() {
   return (
     <React.Fragment>
-      <Suspense fallback={<h2>Loading....</h2>}>
+      <Suspense fallback={<Loader />}>
         <RouterProvider router={router} />
       </Suspense>
     </React.Fragment>

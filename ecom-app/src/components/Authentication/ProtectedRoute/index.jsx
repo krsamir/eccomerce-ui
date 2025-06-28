@@ -3,6 +3,7 @@ import React from "react";
 import CONSTANTS from "@ecom/ui/constants";
 const { ROLES, STORAGE_KEYS } = CONSTANTS;
 const storage = window.localStorage;
+import propTypes from "prop-types";
 
 function ProtectedRoute({ children, hasAuthority = [], ...rest }) {
   if (typeof hasAuthority !== typeof []) {
@@ -47,3 +48,7 @@ function ProtectedRoute({ children, hasAuthority = [], ...rest }) {
 }
 
 export default ProtectedRoute;
+
+ProtectedRoute.propTypes = {
+  hasAuthority: propTypes.arrayOf(propTypes.string),
+};

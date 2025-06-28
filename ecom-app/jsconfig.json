@@ -4,7 +4,10 @@
       "@auth": ["./src/components/Authentication"],
       "@home": ["./src/components/Home"],
       "@api": ["./src/api/index.js"],
-      "@hooks": ["./src/hooks/index.js"]
+      "@hooks": ["./src/hooks/index.js"],
+      "@assets": ["./src/assets"]
     }
-  }
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*"]
 }

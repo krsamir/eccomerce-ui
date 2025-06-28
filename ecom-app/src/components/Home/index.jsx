@@ -1,19 +1,13 @@
+import { Loader } from "@ecom/ui";
 import { Button } from "@mui/material";
 import React from "react";
+import NavBar from "./Navbar";
 
 function Home() {
-  const handleLogout = () => {
-    window?.localStorage?.clear();
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
-  };
   return (
-    <div>
-      <Button variant="contained" onClick={() => handleLogout()}>
-        Logout
-      </Button>
-    </div>
+    <>
+      <NavBar />
+    </>
   );
 }
 

@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import React from "react";
 import NavBar from "./Navbar";
 import CONSTANTS from "@ecom/ui/constants";
-import { useNavigate } from "react-router";
-import { Card } from "@mui/material";
+import { Outlet, useLocation, useNavigate } from "react-router";
+import { Card as MCard } from "@mui/material";
 
 const FullWidthContainer = styled.div`
   display: flex;
@@ -12,6 +12,7 @@ const FullWidthContainer = styled.div`
 `;
 const LeftContainer = styled.div`
   flex: 3;
+  background-color: rgb(247, 247, 247);
   border-radius: 6px;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
     0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -20,22 +21,40 @@ const RightContainer = styled.div`
   flex: 7;
 `;
 
+const CardWrapper = styled.div`
+  padding: 4px 10px;
+`;
+const Card = styled(MCard)`
+  height: 25px;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 700px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
 function Home() {
+  const location = useLocation();
   const navigate = useNavigate();
+
   return (
     <>
       <NavBar />
       <FullWidthContainer>
         <LeftContainer>
-          {(CONSTANTS.APP_CONSTANTS[CONSTANTS.ROLE_NAME]?.SIDEBAR ?? [])?.map(
-            ({ id, name, route }) => (
-              <Card key={id} onClick={() => navigate(route)}>
-                {name}
-              </Card>
-            )
-          )}
+          {(
+            CONSTANTS.APP_CONSTANTS[CONSTANTS.ROLE_NAME(location?.state?.role)]
+              ?.SIDEBAR ?? []
+          )?.map(({ id, name, route }) => (
+            <CardWrapper key={id}>
+              <Card onClick={() => navigate(route)}>{name}</Card>
+            </CardWrapper>
+          ))}
         </LeftContainer>
-        <RightContainer>75%</RightContainer>
+        <RightContainer>
+          <Outlet />
+        </RightContainer>
       </FullWidthContainer>
     </>
   );

@@ -3,6 +3,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import Logo from "@assets/android-chrome-512x512.png";
 import CONSTANTS from "@ecom/ui/constants";
+import { useLocation } from "react-router";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -43,6 +44,7 @@ function NavBar() {
       window?.location?.reload();
     }, 500);
   };
+  const location = useLocation();
 
   return (
     <>
@@ -51,9 +53,12 @@ function NavBar() {
           <ImageContainer src={Logo} />
         </LeftContainer>
         <RightContainer>
-          {CONSTANTS.ROLE_NAME?.length > 0 && (
+          {CONSTANTS.ROLE_NAME(location?.state?.role)?.length > 0 && (
             <Button variant="contained">
-              {(CONSTANTS.ROLE_NAME ?? "")?.replace("_", " ")}
+              {(CONSTANTS.ROLE_NAME(location?.state?.role) ?? "")?.replace(
+                "_",
+                " "
+              )}
             </Button>
           )}
           <Button variant="contained" onClick={() => handleLogout()}>

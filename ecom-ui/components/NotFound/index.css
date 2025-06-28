@@ -1,0 +1,17 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: aliceblue;
+}
+.line1{
+    font-weight: 700;
+    font-size: 25px;
+}
+.line2{
+    font-weight: 700;
+    font-size: 22px;
+}

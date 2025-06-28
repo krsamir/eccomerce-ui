@@ -7,6 +7,7 @@ const ProtectedRoute = lazy(() => import("@auth/ProtectedRoute"));
 const Home = lazy(() => import("@home"));
 import CONSTANTS from "@ecom/ui/constants";
 import { Loader } from "@ecom/ui";
+import { NotFound } from "@ecom/ui";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: CONSTANTS.ROUTE_PATHS.LOGIN,
     element: <Login />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

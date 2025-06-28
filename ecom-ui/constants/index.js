@@ -44,7 +44,8 @@ const CONSTANTS = Object.freeze({
   ROLES,
   ROLE_MAP,
   APP_CONSTANTS,
-  ROLE_NAME: ROLE_MAP.get(roleKey) ?? "",
+  ROLE_NAME: (role) =>
+    role ? ROLE_MAP.get(role) : ROLE_MAP.get(roleKey) ?? "",
 });
 
 export default CONSTANTS;

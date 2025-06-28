@@ -4,8 +4,8 @@ const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   PASSWORD: "/password",
   SUPER_ADMIN: {
-    MAIN: "/super-admin",
-    LOCATION: "/location",
+    MAIN: "super-admin",
+    LOCATION: "location",
   },
 };
 

@@ -1,3 +1,3 @@
 import useAuthentication from "./useLogin";
-
-export { useAuthentication };
+import useLocationData from "./useLocationData";
+export { useAuthentication, useLocationData };

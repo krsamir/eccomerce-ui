@@ -1,5 +1,5 @@
 import { locationApi } from "@api";
-import CONSTANTS from "../utils/constant";
+import CONSTANTS from "@ecom/ui/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 

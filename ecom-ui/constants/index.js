@@ -55,6 +55,7 @@ const CONSTANTS = Object.freeze({
   APP_CONSTANTS,
   ROLE_BY_NAME_MAP,
   ROLES_NAME,
+  QUERY_KEYS: APP_CONSTANTS.QUERY_KEYS,
 });
 
 export default CONSTANTS;

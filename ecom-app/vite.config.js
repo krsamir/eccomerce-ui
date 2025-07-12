@@ -23,6 +23,7 @@ export default defineConfig({
       "@assets": path.join(__dirname, "./src/assets"),
       "@suadmin": path.join(__dirname, "./src/components/SuperAdmin"),
       "@utils": path.join(__dirname, "./src/utils"),
+      "@modules": path.join(__dirname, "./src/components/modules"),
     },
   },
 });

@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@ecom/ui";
 import { useLocationData } from "@hooks";
+import FormDialog from "./CreateLocationForm";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -29,6 +30,7 @@ function Location() {
   const { response, isSuccess } = useLocationData();
 
   const [rowData, setRowData] = useState([]);
+  const [open, setOpen] = useState(false);
   const [colDefs] = useState([
     {
       field: "Action",
@@ -59,7 +61,13 @@ function Location() {
   return (
     <div>
       <div style={{ margin: "20px 0 30px 10px" }}>
-        <Button children="Create" />
+        <Button
+          children="Create"
+          onClick={() => {
+            setOpen(true);
+          }}
+        />
+        <FormDialog open={open} setOpen={setOpen} />
       </div>
       <div style={{ width: "80vw", height: "80vh" }}>
         <AgGridReact

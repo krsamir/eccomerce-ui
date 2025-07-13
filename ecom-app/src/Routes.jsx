@@ -9,6 +9,7 @@ import CONSTANTS from "@ecom/ui/constants";
 import { Loader } from "@ecom/ui";
 import { NotFound } from "@ecom/ui";
 import { getRoleById } from "@utils";
+const Entity = lazy(() => import("@suadmin/Entity"));
 const SuperAdminHome = lazy(() => import("@suadmin"));
 const Location = lazy(() => import("@suadmin/Location"));
 
@@ -32,6 +33,16 @@ const router = createBrowserRouter([
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
               >
                 <Location />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.ENTITY}`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <Entity />
               </ProtectedRoute>
             ),
           },

@@ -1,3 +1,3 @@
 import useAuthentication from "./useLogin";
-
-export { useAuthentication };
+import useEntity from "./useEntity";
+export { useAuthentication, useEntity };

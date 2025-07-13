@@ -1,3 +1,3 @@
 import authenticationApi from "./authentication.api";
-
-export { authenticationApi };
+import entityApi from "./entity.api";
+export { authenticationApi, entityApi };

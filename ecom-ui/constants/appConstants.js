@@ -8,6 +8,11 @@ export const APP_CONSTANTS = Object.freeze({
         name: "Location",
         route: `/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.LOCATION}`,
       },
+      {
+        id: "733c2b52-bffe-4fdc-9734-0e94d276c922",
+        name: "Entity",
+        route: `/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.ENTITY}`,
+      },
     ],
   },
 });

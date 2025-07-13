@@ -3,7 +3,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import Logo from "@assets/android-chrome-512x512.png";
 import CONSTANTS from "@ecom/ui/constants";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { getRole } from "@utils";
 
 const Container = styled.div`

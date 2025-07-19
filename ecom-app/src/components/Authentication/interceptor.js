@@ -1,12 +1,17 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import CONSTANTS from "@ecom/ui/constants";
+import { toCamelCase } from "@ecom/ui/utils";
+
 axios.defaults.timeout = 0.5 * 60 * 1000;
 
 const storage = window.localStorage;
 const setupAxiosInterceptors = () => {
   const onRequestSuccess = (config) => {
     const token = storage.getItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN);
+    if (config.data && !config.data?.keepSnakeCase) {
+      config.data = toCamelCase(config.data);
+    }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

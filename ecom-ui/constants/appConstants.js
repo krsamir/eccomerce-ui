@@ -18,5 +18,9 @@ export const APP_CONSTANTS = Object.freeze({
   QUERY_KEYS: {
     GET_LOCATION_QUERY: "GET_LOCATION_QUERY",
     GET_ALL_MASTER: "GET_ALL_MASTER",
+    GET_USER_BY_ID: "GET_USER_BY_ID",
+  },
+  GLOBAL_STORE: {
+    SET_ROLES: "SET_ROLES",
   },
 });

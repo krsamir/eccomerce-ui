@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   AllCommunityModule,
   ModuleRegistry,
@@ -7,6 +8,10 @@ import {
 import { AgGridReact } from "ag-grid-react";
 import propTypes from "prop-types";
 import { convertISOToLocal } from "@utils";
+import styled from "@emotion/styled";
+import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router";
+import CONSTANTS from "@ecom/ui/constants";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -14,10 +19,47 @@ const theme = themeAlpine.withParams({
   fontFamily: "Roboto",
   fontSize: "15px",
 });
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CellRendererComponent = ({ data, navigate }) => {
+  const handleNavigation = (id) => {
+    return navigate(
+      `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}/create?id=${id}`
+    );
+  };
+  return (
+    <Container>
+      <EditIcon
+        sx={{ cursor: "pointer", marginTop: "5px" }}
+        onClick={() => handleNavigation(data?.id)}
+      />
+    </Container>
+  );
+};
 function MasterGrid({ data }) {
+  const navigate = useNavigate();
   const masterdata = useMemo(() => (data ? data?.data?.data : data), [data]);
   const colDefs = useMemo(
     () => [
+      {
+        field: "",
+        headerName: "Action",
+        cellRenderer: CellRendererComponent,
+        /**
+         * send navigate object as param since initializing in
+         * cell renderer this will lead to multiple initialization of navigate object
+         */
+        cellRendererParams: {
+          navigate,
+        },
+        width: 150,
+      },
       { field: "id", headerName: "ID" },
       { field: "userName" },
       { field: "email" },

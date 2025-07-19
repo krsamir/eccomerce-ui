@@ -36,3 +36,13 @@ export const toCamelCase = (obj) => {
   }
   return obj;
 };
+
+export const tranformCamelCasetoSpaceSeparated = (str) => {
+  if (!str) return "";
+  return str.replace(/([a-z])([A-Z])/g, "$1 $2");
+};
+
+export const capitalize = (str) => {
+  if (!str) return "";
+  return str[0].toUpperCase() + str.slice(1);
+};

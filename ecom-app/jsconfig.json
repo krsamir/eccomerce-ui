@@ -9,6 +9,7 @@
       "@suadmin": ["./src/components/SuperAdmin"],
       "@utils":["./src/utils"],
       "@modules": ["./src/components/modules"],
+      "@store": ["./src/store/GlobalContext.jsx"],
     }
   },
   "exclude": ["node_modules"],

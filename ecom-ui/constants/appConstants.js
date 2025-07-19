@@ -8,6 +8,19 @@ export const APP_CONSTANTS = Object.freeze({
         name: "Location",
         route: `/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.LOCATION}`,
       },
+      {
+        id: "1058df14-d076-405f-a63c-fea410942604",
+        name: "Master",
+        route: `/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.MASTER}`,
+      },
     ],
+  },
+  QUERY_KEYS: {
+    GET_LOCATION_QUERY: "GET_LOCATION_QUERY",
+    GET_ALL_MASTER: "GET_ALL_MASTER",
+    GET_USER_BY_ID: "GET_USER_BY_ID",
+  },
+  GLOBAL_STORE: {
+    SET_ROLES: "SET_ROLES",
   },
 });

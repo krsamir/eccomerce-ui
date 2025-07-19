@@ -9,3 +9,5 @@ export const getRole = () => {
 export const getRoleById = (id) => {
   return CONSTANTS.ROLE_BY_NAME_MAP.get(id);
 };
+
+export const convertISOToLocal = (data) => new Date(data)?.toLocaleString();

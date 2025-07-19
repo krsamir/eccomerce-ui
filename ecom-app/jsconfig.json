@@ -7,7 +7,9 @@
       "@hooks": ["./src/hooks/index.js"],
       "@assets": ["./src/assets"],
       "@suadmin": ["./src/components/SuperAdmin"],
-      "@utils":["./src/utils"]
+      "@utils":["./src/utils"],
+      "@modules": ["./src/components/modules"],
+      "@store": ["./src/store/GlobalContext.jsx"],
     }
   },
   "exclude": ["node_modules"],

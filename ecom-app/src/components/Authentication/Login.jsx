@@ -58,8 +58,8 @@ function Login() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "admin",
+      password: "admin",
     },
   });
   const { setLogin } = useAuthentication();

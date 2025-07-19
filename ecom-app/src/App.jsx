@@ -4,9 +4,10 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Routes from "./Routes";
 import setupAxiosInterceptors from "./components/Authentication/interceptor";
+import { GlobalProvider } from "@store";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+  defaultOptions: { queries: { refetchOnWindowFocus: false, retry: false } },
 });
 setupAxiosInterceptors();
 function App() {
@@ -22,12 +23,14 @@ function App() {
   });
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <MUIThemeProvider theme={MUItheme}>
-          <Routes />
-          <Toaster />
-        </MUIThemeProvider>
-      </QueryClientProvider>
+      <GlobalProvider>
+        <QueryClientProvider client={queryClient}>
+          <MUIThemeProvider theme={MUItheme}>
+            <Routes />
+            <Toaster />
+          </MUIThemeProvider>
+        </QueryClientProvider>
+      </GlobalProvider>
     </>
   );
 }

@@ -28,10 +28,8 @@ const setupAxiosInterceptors = () => {
       (err?.config?.url !== "/auth/login" ||
         err?.config?.url !== "/auth/register") &&
         toast.error("Please Login Again.", { duration: 3000 });
-      if (storage.getItem("token")) {
-        storage.removeItem("token");
-        window.location.reload();
-      }
+      storage.clear();
+      window.location.reload();
     } else if (err?.response?.status === 400) {
       toast.error("Insufficient/Invalid data provided");
     } else if (err.code !== "ERR_CANCELED") {

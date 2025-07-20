@@ -1,32 +1,49 @@
-import {
-  Switch,
-  TextField,
-  Select,
-  MenuItem,
-  Grid,
-  Typography,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
-import { useForm, Form, Controller } from "react-hook-form";
+import { FormComponent } from "@ecom/ui";
 
 const EntityForm = ({ type = "create" }) => {
+  const location = ["Buxar", "vaishali"];
   const createFormFields = [
     { fieldName: "Name", type: "string", required: true },
-    { fieldName: "GST", type: "string", required: true },
+    { fieldName: "GST", type: "string", required: false },
     { fieldName: "Address", type: "string", required: true },
-    { fieldName: "Location", type: "string", required: true },
-    { fieldName: "Active", type: "switch", required: true },
-    { fieldName: "Deleted", type: "switch", required: true },
+    {
+      fieldName: "Location",
+      type: "dropdown",
+      options: location.map((locationCity) => ({
+        label: locationCity,
+        value: locationCity,
+      })),
+      required: true,
+    },
+    {
+      fieldName: "Active",
+      type: "checkbox",
+      disabled: true,
+      defaultValue: true,
+    },
+    { fieldName: "Deleted", type: "checkbox", defaultValue: false },
     { fieldName: "Proprietor Name", type: "string", required: true },
-    { fieldName: "Max Admin", type: "number", required: true },
-    { fieldName: "Max Manager", type: "number", required: true },
+    {
+      fieldName: "Max Admin",
+      type: "number",
+      defaultValue: 2,
+      disabled: true,
+    },
+    {
+      fieldName: "Max Manager",
+      type: "number",
+      defaultValue: 4,
+      disabled: true,
+    },
     {
       fieldName: "Categories",
-      type: "dropdown",
-      options: { OPTION_1: "option1", OPTION_2: "option2" },
+      type: "multiselect",
+      options: [
+        { label: "Ten", value: "option1" },
+        { label: "Twenty", value: "option2" },
+      ],
       required: true,
-      defaultValue: "option1",
+      defaultValue: [],
     },
   ];
   const updateFormFields = [
@@ -34,131 +51,38 @@ const EntityForm = ({ type = "create" }) => {
     { fieldName: "GST", type: "string" },
     { fieldName: "Address", type: "string" },
     { fieldName: "Location", type: "string" },
-    { fieldName: "Active", type: "switch" },
-    { fieldName: "Deleted", type: "switch" },
+    { fieldName: "Active", type: "checkbox" },
+    { fieldName: "Deleted", type: "checkbox" },
     { fieldName: "Proprietor Name", type: "string" },
-    { fieldName: "Max Admin", type: "number" },
-    { fieldName: "Max Manager", type: "number" },
+    {
+      fieldName: "Max Admin",
+      type: "number",
+      required: true,
+      defaultValue: 2,
+      disabled: true,
+    },
+    {
+      fieldName: "Max Manager",
+      type: "number",
+      required: true,
+      defaultValue: 4,
+      disabled: true,
+    },
     {
       fieldName: "Categories",
       type: "dropdown",
-      options: { OPTION_1: "option1", OPTION_2: "option2" },
+      options: [
+        { label: "Ten", value: "option1" },
+        { label: "Twenty", value: "option2" },
+      ],
     },
   ];
 
   const formFields = type == "create" ? createFormFields : updateFormFields;
   const formTitle = type == "create" ? "Create Entity" : "Update Entity";
 
-  const { register, handleSubmit, control } = useForm();
-
   const onSubmit = (formData) => {
     console.log(formData, type);
-  };
-
-  const getFormElement = ({
-    type,
-    fieldName,
-    defaultValue,
-    required,
-    options,
-    disabled,
-  }) => {
-    switch (type) {
-      case "string":
-        return (
-          <Controller
-            control={control}
-            name={fieldName}
-            render={(field) => (
-              <TextField
-                required={required}
-                disabled={disabled}
-                {...field}
-                {...register(fieldName, { required: required, maxLength: 20 })}
-                defaultValue={defaultValue}
-                label={fieldName}
-              />
-            )}
-          />
-        );
-      case "number":
-        return (
-          <Controller
-            control={control}
-            name={fieldName}
-            render={(field) => (
-              <TextField
-                required={required}
-                disabled={disabled}
-                type="number"
-                {...field}
-                {...register(fieldName, { required: required, maxLength: 20 })}
-                defaultValue={defaultValue}
-                label={fieldName}
-              />
-            )}
-          />
-        );
-      case "switch":
-        return (
-          <Controller
-            control={control}
-            name={fieldName}
-            render={(field) => {
-              return (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    columnGap: "40px",
-                  }}
-                >
-                  <InputLabel required={required} disabled={disabled}>
-                    {fieldName}
-                  </InputLabel>
-                  <Switch
-                    {...field}
-                    {...register(fieldName, { required: required })}
-                    defaultValue={defaultValue}
-                  />
-                </div>
-              );
-            }}
-          />
-        );
-      case "dropdown":
-        console.log(fieldName, options);
-        return (
-          <Controller
-            control={control}
-            name={fieldName}
-            render={(field) => (
-              <FormControl fullWidth>
-                <InputLabel
-                  id={fieldName}
-                  required={required}
-                  disabled={disabled}
-                >
-                  {fieldName}
-                </InputLabel>
-                <Select
-                  {...field}
-                  required={required}
-                  disabled={disabled}
-                  {...register(fieldName, { required: required })}
-                  label={fieldName}
-                  labelId={fieldName}
-                  defaultValue={defaultValue}
-                >
-                  {Object.entries(options).map(([key, value]) => {
-                    return <MenuItem value={key}>{value}</MenuItem>;
-                  })}
-                </Select>
-              </FormControl>
-            )}
-          />
-        );
-    }
   };
 
   return (
@@ -175,16 +99,7 @@ const EntityForm = ({ type = "create" }) => {
         padding: "40px",
       }}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ padding: "8px" }}>{formTitle.toUpperCase()}</div>
-        <Grid container spacing={2}>
-          {formFields?.map((field) => (
-            <Grid item size={6}>
-              {getFormElement(field)}
-            </Grid>
-          ))}
-        </Grid>
-      </form>
+      {FormComponent({ onSubmit, formFields, formTitle })}
     </div>
   );
 };

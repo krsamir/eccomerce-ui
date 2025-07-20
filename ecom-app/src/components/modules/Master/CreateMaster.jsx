@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useLocation, useNavigate } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
 import CONSTANTS from "@ecom/ui/constants";
 import { useForm } from "react-hook-form";
 import FormBuilder from "@utils/FormBuilder";
@@ -11,6 +11,7 @@ import { formSchema } from "./Form.schema";
 import { useMaster } from "@hooks";
 import { convertISOToLocal } from "@utils";
 import { useGlobalContext } from "@store";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Container = styled.div``;
 
@@ -26,20 +27,27 @@ const LeftButtonContainer = styled.div`
 `;
 function CreateMaster() {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const query = useMemo(() => new URLSearchParams(location.search), [location]);
+  const queryClient = useQueryClient();
 
-  const { user } = useMaster({ enabled: false, id: query?.get("id") });
+  const [query, setQuery] = useSearchParams();
+
+  const { user, checkUserName, createUser, updateUser } = useMaster({
+    enabled: false,
+    id: query?.get("id"),
+  });
+
   const { state } = useGlobalContext();
 
   const {
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     setValue,
     setError,
+    clearErrors,
+    reset,
   } = useForm({
     defaultValues: {
       id: "",
@@ -81,8 +89,15 @@ function CreateMaster() {
       setValue("updatedAt", convertISOToLocal(user.updatedAt));
       setValue("createdBy", user.createdBy);
       setValue("createdByUser", user.createdByUser);
+
+      // if valid object is not required
+      if (Object.keys(user)?.length === 0) {
+        reset({}, { keepValues: false });
+        query.delete("id");
+        setQuery(query);
+      }
     }
-  }, [setValue, user]);
+  }, [query, reset, setQuery, setValue, user]);
 
   const handleNavigation = useCallback(() => {
     navigate(
@@ -92,7 +107,41 @@ function CreateMaster() {
 
   const handleSave = () => {
     handleSubmit((data) => {
-      console.log("🚀 ~ handleSubmit ~ data:", data);
+      if (!data?.id) {
+        createUser(data, {
+          onSuccess({ data }) {
+            if (data.status === CONSTANTS.STATUS.SUCCESS) {
+              const userId = data?.data?.id;
+              query.set("id", userId);
+              setQuery(query);
+              reset({}, { keepValues: true });
+            }
+          },
+        });
+      } else {
+        const value = Object.entries(data);
+        const touchedFields = Object.keys(dirtyFields);
+        const arr = [];
+        value.forEach(([key, value]) => {
+          if (touchedFields?.includes(key)) {
+            arr.push([key, value]);
+          }
+        });
+        const saveData = Object.fromEntries(arr);
+        updateUser(
+          { ...saveData, id: watch("id") },
+          {
+            onSuccess(res) {
+              if (res.data.status === CONSTANTS.STATUS.SUCCESS) {
+                // reset({}, { keepValues: true });
+                queryClient.invalidateQueries({
+                  queryKey: [CONSTANTS.QUERY_KEYS.GET_USER_BY_ID, watch("id")],
+                });
+              }
+            },
+          }
+        );
+      }
     })();
   };
 
@@ -106,19 +155,54 @@ function CreateMaster() {
       })),
     [state]
   );
-  console.info(errors);
+
   formSchema[
     formSchema.findIndex(({ name }) => name === "userName") ?? 1
-  ].blurHandler = useCallback(
-    (e) => {
-      console.info(e);
-      formSchema[
-        formSchema.findIndex(({ name }) => name === "userName") ?? 1
-      ].errorKey = "User Name Already Exists.";
-      setError("userName", { message: "User Name Already Exists." });
-    },
-    [setError]
-  );
+  ].blurHandler = useCallback(() => {
+    if (watch("userName")?.length > 0) {
+      checkUserName(
+        { type: "userName", value: watch("userName") },
+        {
+          onSuccess({ data }) {
+            if (
+              data?.status === CONSTANTS.STATUS.SUCCESS &&
+              data?.data?.isExisting
+            ) {
+              setError("userName", {
+                message: `${watch("userName")} Already Exists.`,
+              });
+            } else {
+              clearErrors("userName");
+            }
+          },
+        }
+      );
+    }
+  }, [checkUserName, clearErrors, setError, watch]);
+
+  formSchema[
+    formSchema.findIndex(({ name }) => name === "email") ?? 2
+  ].blurHandler = useCallback(() => {
+    if (watch("email")?.length > 0) {
+      checkUserName(
+        { type: "email", value: watch("email") },
+        {
+          onSuccess({ data }) {
+            if (
+              data?.status === CONSTANTS.STATUS.SUCCESS &&
+              data?.data?.isExisting
+            ) {
+              setError("email", {
+                message: `${watch("email")} Already Exists.`,
+              });
+            } else {
+              clearErrors("email");
+            }
+          },
+        }
+      );
+    }
+  }, [checkUserName, clearErrors, setError, watch]);
 
   return (
     <Container>
@@ -129,7 +213,11 @@ function CreateMaster() {
             Back
           </Button>
         </LeftButtonContainer>
-        <Button variant="contained" onClick={handleSave}>
+        <Button
+          variant="contained"
+          onClick={handleSave}
+          disabled={!(Object.keys(dirtyFields)?.length > 0)}
+        >
           <SaveIcon sx={{ marginRight: "5px" }} />
           {watch("id") ? "Update" : "Create"}
         </Button>

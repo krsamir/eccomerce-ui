@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { masterApi } from "@api";
 import CONSTANTS from "@ecom/ui/constants";
@@ -20,7 +20,7 @@ const useMaster = ({ id = "", enabled = false, rolesEnabled = false }) => {
   });
 
   const { data: { data: { data: roles = null } = {} } = {} } = useQuery({
-    queryKey: [CONSTANTS.QUERY_KEYS.GET_USER_BY_ID, id],
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_ROLES],
     queryFn: () => masterApi.getAllRoles(),
     enabled: rolesEnabled,
   });
@@ -32,11 +32,30 @@ const useMaster = ({ id = "", enabled = false, rolesEnabled = false }) => {
       });
     }
     return () => {};
-  }, [roles?.length]);
+  }, [dispatch, roles, roles?.length]);
+
+  const { mutate: checkUserName } = useMutation({
+    mutationFn: masterApi.checkIfUserExistsApi,
+  });
+
+  const { mutate: createUser } = useMutation({
+    mutationFn: masterApi.createMasterUser,
+  });
+
+  const { mutate: updateUser } = useMutation({
+    mutationFn: masterApi.updateMasterUser,
+  });
 
   return useMemo(
-    () => ({ masterData: data, user, roles }),
-    [data?.data?.data, user]
+    () => ({
+      masterData: data,
+      user,
+      roles,
+      checkUserName,
+      createUser,
+      updateUser,
+    }),
+    [data, user, roles, checkUserName, createUser, updateUser]
   );
 };
 

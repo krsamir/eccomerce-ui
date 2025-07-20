@@ -10,7 +10,6 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { capitalize, tranformCamelCasetoSpaceSeparated } from "@ecom/ui/utils";
 
 const FieldType = ({ type, form, field, errors }) => {
   const checkIsError = useCallback(
@@ -26,16 +25,10 @@ const FieldType = ({ type, form, field, errors }) => {
         fullWidth
         disabled={form?.disabled}
         {...field}
+        onBlur={form?.blurHandler ?? (() => {})}
         error={checkIsError(form?.name)}
         helperText={
-          checkIsError(form?.name) &&
-          `${
-            form?.errorKey
-              ? form?.errorKey
-              : `Enter ${tranformCamelCasetoSpaceSeparated(
-                  capitalize(form?.name)
-                )}`
-          }`
+          checkIsError(form?.name) && `${errors[form?.name]?.message}`
         }
       />
     );
@@ -53,13 +46,7 @@ const FieldType = ({ type, form, field, errors }) => {
         </Select>
         {checkIsError(form?.name) && (
           <FormHelperText sx={{ color: "#d32f2f" }}>
-            {`${
-              form?.errorKey
-                ? form?.errorKey
-                : `Enter ${tranformCamelCasetoSpaceSeparated(
-                    capitalize(form?.name)
-                  )}`
-            }`}
+            {checkIsError(form?.name) && `${errors[form?.name]?.message}`}
           </FormHelperText>
         )}
       </FormControl>
@@ -82,7 +69,6 @@ function FormBuilder({ data, controller, errors }) {
                   disabled: false,
                   type: "text",
                   label: "ID",
-                  errorKey: "",
                 },
                 {
                   name: "isActive",
@@ -93,8 +79,13 @@ function FormBuilder({ data, controller, errors }) {
                     { name: "Yes", value: 1 },
                     { name: "No", value: 0 },
                   ],
-                  errorKey: "This field cannot be blank.",
-                  rules: { required: true },
+
+                  rules: {
+                    required: {
+                      message: "User Name cannot be blank.",
+                      value: true,
+                    },
+                  },
                 },
               ],
               null,

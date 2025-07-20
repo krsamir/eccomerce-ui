@@ -39,6 +39,7 @@ function CreateMaster() {
     watch,
     formState: { errors },
     setValue,
+    setError,
   } = useForm({
     defaultValues: {
       id: "",
@@ -105,6 +106,20 @@ function CreateMaster() {
       })),
     [state]
   );
+  console.info(errors);
+  formSchema[
+    formSchema.findIndex(({ name }) => name === "userName") ?? 1
+  ].blurHandler = useCallback(
+    (e) => {
+      console.info(e);
+      formSchema[
+        formSchema.findIndex(({ name }) => name === "userName") ?? 1
+      ].errorKey = "User Name Already Exists.";
+      setError("userName", { message: "User Name Already Exists." });
+    },
+    [setError]
+  );
+
   return (
     <Container>
       <ButtonContainer>

@@ -12,6 +12,8 @@ import { getRoleById } from "@utils";
 const Entity = lazy(() => import("@suadmin/Entity"));
 const SuperAdminHome = lazy(() => import("@suadmin"));
 const Location = lazy(() => import("@suadmin/Location"));
+const Master = lazy(() => import("@modules/Master"));
+const CreateMaster = lazy(() => import("@modules/Master/CreateMaster"));
 
 const router = createBrowserRouter([
   {
@@ -37,12 +39,33 @@ const router = createBrowserRouter([
             ),
           },
           {
+
             path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.ENTITY}`,
             element: (
               <ProtectedRoute
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
               >
                 <Entity />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <Master />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}/create`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <CreateMaster />
               </ProtectedRoute>
             ),
           },

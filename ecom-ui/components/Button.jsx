@@ -1,9 +1,11 @@
 import React from "react";
 import { Button as MuiButton } from "@mui/material";
-function Button({ children }) {
+function Button({ children, ...props }) {
   return (
     <div>
-      <MuiButton variant="contained">{children}</MuiButton>
+      <MuiButton variant="contained" {...props}>
+        {children}
+      </MuiButton>
     </div>
   );
 }

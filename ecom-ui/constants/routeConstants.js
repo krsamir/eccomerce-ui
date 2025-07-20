@@ -7,6 +7,7 @@ const ROUTES = {
     MAIN: "super-admin",
     LOCATION: "location",
     ENTITY: "entity",
+    MASTER: "master",
   },
 };
 

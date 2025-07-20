@@ -40,7 +40,9 @@ function Location() {
       cellRenderer: () => (
         <div style={{ display: "flex", gap: "30px", justifyItems: "center" }}>
           <DeleteIcon style={{ cursor: "pointer", color: "red" }} />
-          <EditIcon style={{ cursor: "pointer", color: "green" }} />
+          <EditIcon style={{ cursor: "pointer", color: "green" }} onClick={() => {
+            setOpen(true);
+          }}/>
         </div>
       ),
     },

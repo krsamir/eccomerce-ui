@@ -84,6 +84,18 @@ function FormBuilder({ data, controller, errors }) {
                   label: "ID",
                   errorKey: "",
                 },
+                {
+                  name: "isActive",
+                  disabled: false,
+                  type: "dropdown",
+                  label: "Is Active Account?",
+                  dropDownOption: [
+                    { name: "Yes", value: 1 },
+                    { name: "No", value: 0 },
+                  ],
+                  errorKey: "This field cannot be blank.",
+                  rules: { required: true },
+                },
               ],
               null,
               5

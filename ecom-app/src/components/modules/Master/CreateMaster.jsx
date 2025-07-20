@@ -54,8 +54,10 @@ function CreateMaster() {
       isActive: "",
       isDeleted: "",
       invalidLogins: 0,
-      created_at: "",
-      updated_at: "",
+      createdAt: "",
+      updatedAt: "",
+      createdByUser: "",
+      createdBy: "",
     },
   });
 
@@ -68,22 +70,24 @@ function CreateMaster() {
       setValue("lastName", user.lastName);
       setValue("mobile", user.mobile);
       setValue("roles", user.role?.id ?? "");
-      setValue("isActive", user.isActive === 1);
-      setValue("isDeleted", user.isDeleted === 1);
+      setValue("isActive", user.isActive);
+      setValue("isDeleted", user.isDeleted);
       setValue("token", user.token ? user.token : "N/A");
       setValue("validTill", user.validTill ? user.validTill : "N/A");
       setValue("lastLogin", convertISOToLocal(user.lastLogin));
       setValue("invalidLogins", user.invalidLogins);
-      setValue("created_at", convertISOToLocal(user.createdAt));
-      setValue("updated_at", convertISOToLocal(user.updatedAt));
+      setValue("createdAt", convertISOToLocal(user.createdAt));
+      setValue("updatedAt", convertISOToLocal(user.updatedAt));
+      setValue("createdBy", user.createdBy);
+      setValue("createdByUser", user.createdByUser);
     }
-  }, [user]);
+  }, [setValue, user]);
 
   const handleNavigation = useCallback(() => {
     navigate(
       `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}`
     );
-  }, []);
+  }, [navigate]);
 
   const handleSave = () => {
     handleSubmit((data) => {

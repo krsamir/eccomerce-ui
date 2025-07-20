@@ -9,7 +9,6 @@ import { AgGridReact } from "ag-grid-react";
 import propTypes from "prop-types";
 import { convertISOToLocal } from "@utils";
 import styled from "@emotion/styled";
-import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router";
 import CONSTANTS from "@ecom/ui/constants";
 
@@ -82,7 +81,7 @@ function MasterGrid({ data }) {
         valueGetter: ({ data }) => (data?.isDeleted === 1 ? "YES" : "NO"),
       },
       { field: "invalidLogins" },
-      { field: "createdBy" },
+      { field: "createdByUser", headerName: "Created By" },
       {
         field: "createdAt",
         valueGetter: ({ data }) => convertISOToLocal(data?.createdAt),
@@ -92,14 +91,14 @@ function MasterGrid({ data }) {
         valueGetter: ({ data }) => convertISOToLocal(data?.updatedAt),
       },
     ],
-    []
+    [navigate]
   );
 
   const gridOptions = useMemo(
     () => ({
       enableCellTextSelection: true,
       // rowSelection: { copySelectedRows: true, mode: "singleRow" },
-      onGridReady: (params) => {},
+      onGridReady: () => {},
       pagination: true,
     }),
     []

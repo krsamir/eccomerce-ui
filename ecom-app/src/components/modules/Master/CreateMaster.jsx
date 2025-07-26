@@ -38,6 +38,7 @@ function CreateMaster() {
   });
 
   const { state } = useGlobalContext();
+  console.log("🚀 ~ CreateMaster ~ state:", state.entities);
 
   const {
     control,

@@ -4,6 +4,7 @@ import React, { createContext, useContext, useReducer } from "react";
 // Initial state
 const initialState = {
   roles: [],
+  entities: [],
 };
 
 // Reducer function
@@ -11,6 +12,8 @@ function globalReducer(state, action) {
   switch (action.type) {
     case CONSTANTS.GLOBAL_STORE.SET_ROLES:
       return { ...state, roles: action.payload };
+    case CONSTANTS.GLOBAL_STORE.SET_ENTITIES:
+      return { ...state, entities: action.payload };
     default:
       return state;
   }

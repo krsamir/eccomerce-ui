@@ -64,6 +64,7 @@ function MasterGrid({ data }) {
       { field: "email" },
       { field: "firstName" },
       { field: "lastName" },
+      { field: "entityName", headerName: "Entity" },
       { field: "role.name" },
       { field: "mobile" },
       {

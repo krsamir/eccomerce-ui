@@ -38,7 +38,6 @@ function CreateMaster() {
   });
 
   const { state } = useGlobalContext();
-  console.log("🚀 ~ CreateMaster ~ state:", state.entities);
 
   const {
     control,
@@ -64,6 +63,7 @@ function CreateMaster() {
       isActive: "",
       isDeleted: "",
       invalidLogins: 0,
+      entityId: "",
       createdAt: "",
       updatedAt: "",
       createdByUser: "",
@@ -82,6 +82,7 @@ function CreateMaster() {
       setValue("roles", user.role?.id ?? "");
       setValue("isActive", user.isActive);
       setValue("isDeleted", user.isDeleted);
+      setValue("entityId", user.entityId);
       setValue("token", user.token ? user.token : "N/A");
       setValue("validTill", user.validTill ? user.validTill : "N/A");
       setValue("lastLogin", convertISOToLocal(user.lastLogin));
@@ -89,7 +90,7 @@ function CreateMaster() {
       setValue("createdAt", convertISOToLocal(user.createdAt));
       setValue("updatedAt", convertISOToLocal(user.updatedAt));
       setValue("createdBy", user.createdBy);
-      setValue("createdByUser", user.createdByUser);
+      setValue("createdByUser", user.createdByUser ?? "");
 
       // if valid object is not required
       if (Object.keys(user)?.length === 0) {
@@ -154,7 +155,18 @@ function CreateMaster() {
         name: role?.name,
         value: role?.id,
       })),
-    [state]
+    [state?.roles]
+  );
+
+  formSchema[
+    formSchema.findIndex(({ name }) => name === "entityId") ?? 8
+  ].dropDownOption = useMemo(
+    () =>
+      (state?.entities ?? []).map((entity) => ({
+        name: entity?.name,
+        value: entity?.id,
+      })),
+    [state?.entities]
   );
 
   formSchema[

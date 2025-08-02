@@ -26,6 +26,7 @@ masterApi.createMasterUser = (payload) => {
     roles: payload?.roles,
     isActive: payload?.isActive,
     isDeleted: payload?.isDeleted,
+    entityId: payload?.entityId,
   };
   return axios.post(`${BASE_URL}`, data, {
     signal: createMasterController?.signal,

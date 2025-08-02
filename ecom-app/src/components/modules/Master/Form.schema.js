@@ -67,6 +67,15 @@ export const formSchema = [
     },
   },
   {
+    name: "entityId",
+    disabled: false,
+    type: "dropdown",
+    label: "Entity",
+    rules: {
+      required: { message: "This field cannot be blank.", value: true },
+    },
+  },
+  {
     name: "isDeleted",
     disabled: false,
     type: "dropdown",

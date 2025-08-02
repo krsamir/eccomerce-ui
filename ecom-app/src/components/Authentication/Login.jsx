@@ -58,7 +58,7 @@ function Login() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "admin",
+      email: "sudo",
       password: "admin",
     },
   });

@@ -3,8 +3,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import Logo from "@assets/android-chrome-512x512.png";
 import CONSTANTS from "@ecom/ui/constants";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { getRole } from "@utils";
+import { useGlobalContext } from "@store";
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +39,10 @@ const RightContainer = styled.div`
 `;
 
 const storage = window?.localStorage;
-
+const Text = styled.span`
+  text-decoration: underline;
+  margin-left: 5px;
+`;
 function NavBar() {
   const handleLogout = () => {
     storage?.clear();
@@ -47,7 +51,7 @@ function NavBar() {
     }, 500);
   };
   const navigate = useNavigate();
-
+  const { state: { user } = {} } = useGlobalContext();
   return (
     <>
       <Container>
@@ -55,6 +59,11 @@ function NavBar() {
           <ImageContainer src={Logo} />
         </LeftContainer>
         <RightContainer>
+          {user && (
+            <Button variant="contained">
+              Hi <Text>{user?.name}</Text>
+            </Button>
+          )}
           {getRole()?.length > 0 && (
             <Button
               variant="contained"

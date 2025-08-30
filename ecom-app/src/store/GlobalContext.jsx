@@ -5,6 +5,7 @@ import React, { createContext, useContext, useReducer } from "react";
 const initialState = {
   roles: [],
   entities: [],
+  user: null,
 };
 
 // Reducer function
@@ -14,6 +15,8 @@ function globalReducer(state, action) {
       return { ...state, roles: action.payload };
     case CONSTANTS.GLOBAL_STORE.SET_ENTITIES:
       return { ...state, entities: action.payload };
+    case CONSTANTS.GLOBAL_STORE.SET_LOGGEDIN_USER:
+      return { ...state, user: action.payload };
     default:
       return state;
   }

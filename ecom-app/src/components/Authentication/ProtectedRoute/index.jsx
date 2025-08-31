@@ -38,7 +38,7 @@ function ProtectedRoute({ children, hasAuthority = [], ...rest }) {
   return (
     <Navigate
       to={{
-        pathname: "/login",
+        pathname: `${CONSTANTS.ROUTE_PATHS.LOGIN}`,
         search: location.search,
       }}
       replace

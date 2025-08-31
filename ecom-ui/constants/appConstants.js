@@ -6,12 +6,12 @@ export const APP_CONSTANTS = Object.freeze({
       {
         id: "ebb6df4a-ce4a-481d-be18-72eaab290ebf",
         name: "Location",
-        route: `/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.LOCATION}`,
+        route: `${ROUTES.ADMINISTRATION}/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.LOCATION}`,
       },
       {
         id: "1058df14-d076-405f-a63c-fea410942604",
         name: "Master",
-        route: `/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.MASTER}`,
+        route: `${ROUTES.ADMINISTRATION}/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.MASTER}`,
       },
     ],
   },

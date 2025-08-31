@@ -17,6 +17,10 @@ const CreateMaster = lazy(() => import("@modules/Master/CreateMaster"));
 const router = createBrowserRouter([
   {
     path: CONSTANTS.ROUTE_PATHS.HOME,
+    element: <h2>Home Page</h2>,
+  },
+  {
+    path: CONSTANTS.ROUTE_PATHS.ADMINISTRATION,
     element: (
       <ProtectedRoute>
         <Home />
@@ -24,11 +28,11 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}`,
+        path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}`,
         element: <SuperAdminHome />,
         children: [
           {
-            path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.LOCATION}`,
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.LOCATION}`,
             element: (
               <ProtectedRoute
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
@@ -38,7 +42,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}`,
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}`,
             element: (
               <ProtectedRoute
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
@@ -48,7 +52,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}/create`,
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}/create`,
             element: (
               <ProtectedRoute
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}

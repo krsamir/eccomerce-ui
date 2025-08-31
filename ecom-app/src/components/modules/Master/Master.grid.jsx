@@ -29,7 +29,7 @@ const Container = styled.div`
 const CellRendererComponent = ({ data, navigate }) => {
   const handleNavigation = (id) => {
     return navigate(
-      `/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}/create?id=${id}`
+      `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}/create?id=${id}`
     );
   };
   return (

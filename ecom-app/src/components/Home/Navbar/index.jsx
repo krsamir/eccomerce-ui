@@ -12,7 +12,7 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
-  background-color: #00416a5d;
+  background-color: ${({ theme: { p1 } }) => p1};
   height: 60px;
   box-sizing: border-box;
   position: sticky;

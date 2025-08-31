@@ -14,10 +14,12 @@ const Location = lazy(() => import("@suadmin/Location"));
 const Master = lazy(() => import("@modules/Master"));
 const CreateMaster = lazy(() => import("@modules/Master/CreateMaster"));
 
+const UserHome = lazy(() => import("@user").then((m) => ({ default: m.Home })));
+
 const router = createBrowserRouter([
   {
     path: CONSTANTS.ROUTE_PATHS.HOME,
-    element: <h2>Home Page</h2>,
+    element: <UserHome />,
   },
   {
     path: CONSTANTS.ROUTE_PATHS.ADMINISTRATION,

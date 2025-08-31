@@ -25,6 +25,7 @@ export default defineConfig({
       "@utils": path.join(__dirname, "./src/utils"),
       "@modules": path.join(__dirname, "./src/components/modules"),
       "@store": path.join(__dirname, "./src/store/GlobalContext.jsx"),
+      "@user": path.join(__dirname, "./src/components/modules/User/index.jsx"),
     },
   },
 });

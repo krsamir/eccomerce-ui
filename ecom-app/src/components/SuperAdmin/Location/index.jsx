@@ -27,7 +27,7 @@ const convertToLocationRowData = (data) => {
 };
 
 function Location() {
-  const { response, isSuccess } = useLocationData();
+  const { response, isSuccess } = useLocationData({ enabled: true });
 
   const [rowData, setRowData] = useState([]);
   const [open, setOpen] = useState(false);

@@ -1,14 +1,26 @@
 import { locationApi } from "@api";
 import CONSTANTS from "@ecom/ui/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useGlobalContext } from "@store";
 
-const useLocationData = () => {
-  // get call
+const useLocationData = ({ enabled = false }) => {
+  const { dispatch } = useGlobalContext();
+
   const { data: response, isSuccess } = useQuery({
     queryFn: locationApi.getLocationApi,
     queryKey: [CONSTANTS.QUERY_KEYS.GET_LOCATION_QUERY],
+    enabled,
   });
+
+  useEffect(() => {
+    if ((response?.data?.data ?? [])?.length > 0) {
+      dispatch({
+        type: CONSTANTS.GLOBAL_STORE.SET_LOCATION_LIST,
+        payload: response?.data?.data,
+      });
+    }
+  }, [response]);
 
   const { mutate: createLocation } = useMutation({
     mutationFn: locationApi.createLocationApi,

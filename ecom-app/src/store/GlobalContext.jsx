@@ -6,6 +6,7 @@ const initialState = {
   roles: [],
   entities: [],
   user: null,
+  locations: [],
 };
 
 // Reducer function
@@ -17,6 +18,8 @@ function globalReducer(state, action) {
       return { ...state, entities: action.payload };
     case CONSTANTS.GLOBAL_STORE.SET_LOGGEDIN_USER:
       return { ...state, user: action.payload };
+    case CONSTANTS.GLOBAL_STORE.SET_LOCATION_LIST:
+      return { ...state, locations: action.payload };
     default:
       return state;
   }

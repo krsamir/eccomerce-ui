@@ -37,7 +37,9 @@ const useUser = ({}) => {
   const { mutate: loginWithCreds, isPending: isPendingLogin } = useMutation({
     mutationFn: userApi.loginApi,
   });
-
+  const { mutate: initiateForgotPassword } = useMutation({
+    mutationFn: userApi.forgotPasswordApi,
+  });
   return useMemo(
     () => ({
       registerUser,
@@ -48,6 +50,7 @@ const useUser = ({}) => {
       setPassword,
       isPendingLogin,
       loginWithCreds,
+      initiateForgotPassword,
     }),
     [
       registerUser,
@@ -58,6 +61,7 @@ const useUser = ({}) => {
       isPendingPasswordSet,
       isPendingLogin,
       loginWithCreds,
+      initiateForgotPassword,
     ]
   );
 };

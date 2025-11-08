@@ -65,6 +65,7 @@ const STATE = {
   SIGN_UP: "SIGN_UP",
   ACCOUNT_CONFIRMATION: "ACCOUNT_CONFIRMATION",
   SET_PASSWORD: "SET_PASSWORD",
+  FORGOT_PASSWORD: "FORGOT_PASSWORD",
 };
 
 export default function LoginComponent() {
@@ -77,6 +78,7 @@ export default function LoginComponent() {
     setPassword,
     isPendingLogin,
     loginWithCreds,
+    initiateForgotPassword,
   } = useUser({});
 
   const [formState, setFormState] = useState(STATE.LOGIN);
@@ -102,10 +104,18 @@ export default function LoginComponent() {
     password: "",
   });
 
+  const [forgotPassword, setForgotPassword] = useState({
+    email: "",
+    token: "",
+    password: "",
+  });
+
   const [
     showPasswordFieldForConfirmationm,
     setShowPasswordFieldForConfirmationm,
   ] = useState(false);
+
+  const [step, setStep] = useState(0);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -128,6 +138,10 @@ export default function LoginComponent() {
       const val = { ...accountConfirmation };
       val[name] = value;
       setAccountConfirmation(val);
+    } else if (target === STATE.FORGOT_PASSWORD) {
+      const val = { ...forgotPassword };
+      val[name] = value;
+      setForgotPassword(val);
     }
   };
   const handleSubmit = (target = STATE.LOGIN) => {
@@ -137,8 +151,10 @@ export default function LoginComponent() {
         {
           onSuccess(response) {
             const data = response.data;
-            setLoginValue({ email: "", password: "" });
-            handleClose();
+            if (data.status === CONSTANTS.STATUS.SUCCESS) {
+              setLoginValue({ email: "", password: "" });
+              handleClose();
+            }
           },
         }
       );
@@ -194,6 +210,54 @@ export default function LoginComponent() {
           },
         }
       );
+    }
+    if (target === STATE.FORGOT_PASSWORD) {
+      if (step === 0) {
+        initiateForgotPassword(
+          { ...forgotPassword },
+          {
+            onSuccess(response) {
+              const data = response.data;
+              if (data.status === CONSTANTS.STATUS.SUCCESS) {
+                setStep(1);
+              }
+            },
+          }
+        );
+      }
+      if (step === 1) {
+        const payload = { ...forgotPassword };
+        delete payload.password;
+        confirmAccount(
+          { ...payload },
+          {
+            onSuccess(response) {
+              const data = response.data;
+              if (data.data) {
+                setStep(2);
+              }
+            },
+          }
+        );
+      }
+
+      if (step === 2) {
+        const payload = { ...forgotPassword };
+        setPassword(
+          { ...payload },
+          {
+            onSuccess(response) {
+              const data = response.data;
+              if (data.status === CONSTANTS.STATUS.SUCCESS) {
+                setStep(0);
+                setForgotPassword({ email: "", password: "", token: "" });
+                setFormState(STATE.LOGIN);
+                handleClose();
+              }
+            },
+          }
+        );
+      }
     }
   };
   return (
@@ -344,6 +408,52 @@ export default function LoginComponent() {
                 {t("login")} ?
               </Button>
             )}
+            {formState === STATE.FORGOT_PASSWORD && (
+              <>
+                <Text
+                  variant="outlined"
+                  placeholder="Email"
+                  name="email"
+                  value={forgotPassword.email}
+                  onChange={(e) => handleChange(e, STATE.FORGOT_PASSWORD)}
+                  disabled={step !== 0}
+                />
+                {step > 0 && (
+                  <Text
+                    variant="outlined"
+                    placeholder="Token"
+                    name="token"
+                    value={forgotPassword.token}
+                    onChange={(e) => handleChange(e, STATE.FORGOT_PASSWORD)}
+                    disabled={step !== 1}
+                  />
+                )}
+                {step > 1 && (
+                  <Text
+                    variant="outlined"
+                    placeholder="Password"
+                    name="password"
+                    value={forgotPassword.password}
+                    onChange={(e) => handleChange(e, STATE.FORGOT_PASSWORD)}
+                  />
+                )}
+                <Button
+                  variant="contained"
+                  onClick={() => handleSubmit(STATE.FORGOT_PASSWORD)}
+                >
+                  Proceed
+                </Button>
+              </>
+            )}
+            {formState === STATE.LOGIN && (
+              <Button
+                variant="text"
+                onClick={() => setFormState(() => STATE.FORGOT_PASSWORD)}
+              >
+                {t("forgot_password")} ?
+              </Button>
+            )}
+            {formState === STATE.FORGOT_PASSWORD && <></>}
           </FormHandler>
         </DialogContent>
       </Dialog>

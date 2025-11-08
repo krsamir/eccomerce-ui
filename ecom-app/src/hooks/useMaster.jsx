@@ -5,7 +5,12 @@ import CONSTANTS from "@ecom/ui/constants";
 import { useEffect, useMemo } from "react";
 import { useGlobalContext } from "@store";
 
-const useMaster = ({ id = "", enabled = false, rolesEnabled = false }) => {
+const useMaster = ({
+  id = "",
+  enabled = false,
+  rolesEnabled = false,
+  isLoggedInUser = false,
+}) => {
   const { dispatch } = useGlobalContext();
   const { data } = useQuery({
     queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_MASTER],
@@ -45,6 +50,20 @@ const useMaster = ({ id = "", enabled = false, rolesEnabled = false }) => {
   const { mutate: updateUser } = useMutation({
     mutationFn: masterApi.updateMasterUser,
   });
+
+  const { data: { data: loggedInUser } = {} } = useQuery({
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_LOGGED_IN_USER],
+    queryFn: masterApi.getLoggedInUser,
+    enabled: isLoggedInUser,
+  });
+  useEffect(() => {
+    if (loggedInUser) {
+      dispatch({
+        type: CONSTANTS.GLOBAL_STORE.SET_LOGGEDIN_USER,
+        payload: loggedInUser?.data,
+      });
+    }
+  }, [dispatch, loggedInUser]);
 
   return useMemo(
     () => ({

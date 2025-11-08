@@ -5,7 +5,7 @@ import CONSTANTS from "@ecom/ui/constants";
 import { Outlet, useNavigate } from "react-router";
 import { Card as MCard } from "@mui/material";
 import { getRole } from "@utils";
-import { useUser } from "@hooks";
+import { useMaster } from "@hooks";
 
 const FullWidthContainer = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ const Card = styled(MCard)`
 
 function Home() {
   const navigate = useNavigate();
-  useUser({ enabled: true });
+  useMaster({ isLoggedInUser: true });
   return (
     <>
       <NavBar />

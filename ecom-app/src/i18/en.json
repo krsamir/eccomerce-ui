@@ -1,3 +1,7 @@
 {
-  "welcome": "welcome to BG"
+  "login": "Login",
+  "logo_title": "Apka Apna Dukan, Delivery in minutes",
+  "sign_up": "Sign Up?",
+  "confirm_token": "Confirm",
+  "set_password": "Set Password"
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../../../../assets/android-chrome-512x512.png";
 import styled from "@emotion/styled";
-import i18next, { t } from "i18next";
+import i18next from "i18next";
 import { useLocationData } from "@hooks";
 import { useGlobalContext } from "@store";
 import LoginComponent from "../LoginComponent";

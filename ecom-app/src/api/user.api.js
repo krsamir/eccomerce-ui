@@ -4,6 +4,9 @@ const BASE_URL = "/api/user";
 
 const userApi = {};
 
-userApi.getLoggedInUser = () => axios.get(`${BASE_URL}`);
+userApi.registerUser = (data) => axios.post(`${BASE_URL}/create`, data);
+userApi.confirmAccountApi = (data) => axios.post(`${BASE_URL}/confirm`, data);
+userApi.setPasswordApi = (data) => axios.post(`${BASE_URL}/set-password`, data);
+userApi.loginApi = (data) => axios.post(`${BASE_URL}/login`, data);
 
 export default userApi;

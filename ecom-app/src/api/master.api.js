@@ -44,4 +44,6 @@ masterApi.updateMasterUser = (payload) => {
   });
 };
 
+masterApi.getLoggedInUser = () => axios.get(`${BASE_URL}/me`);
+
 export default masterApi;

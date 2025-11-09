@@ -40,7 +40,6 @@ const useUser = ({}) => {
 
   useEffect(() => {
     if (loggedInUser) {
-      console.log("🚀 ~ useUser ~ loggedInUser:", loggedInUser.user);
       dispatch({
         type: CONSTANTS.GLOBAL_STORE.SET_LOGGED_IN_USER,
         payload: loggedInUser?.user,

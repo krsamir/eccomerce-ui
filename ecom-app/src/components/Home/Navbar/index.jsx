@@ -51,7 +51,7 @@ function NavBar() {
     }, 500);
   };
   const navigate = useNavigate();
-  const { state: { user } = {} } = useGlobalContext();
+  const { state: { masterUser } = {} } = useGlobalContext();
   return (
     <>
       <Container>
@@ -59,9 +59,9 @@ function NavBar() {
           <ImageContainer src={Logo} />
         </LeftContainer>
         <RightContainer>
-          {user && (
+          {masterUser && (
             <Button variant="contained">
-              Hi <Text>{user?.name}</Text>
+              Hi <Text>{masterUser?.name}</Text>
             </Button>
           )}
           {getRole()?.length > 0 && (

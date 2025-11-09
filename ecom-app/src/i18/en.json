@@ -4,5 +4,7 @@
   "sign_up": "Sign Up?",
   "confirm_token": "Confirm",
   "set_password": "Set Password",
-  "forgot_password": "Forgot Password"
+  "forgot_password": "Forgot Password",
+  "logout": "Logout",
+  "hello": "HI"
 }

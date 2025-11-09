@@ -6,20 +6,7 @@ import { useEffect, useMemo } from "react";
 import { useGlobalContext } from "@store";
 
 const useUser = ({}) => {
-  // const { dispatch } = useGlobalContext();
-  // const { data: { data } = {} } = useQuery({
-  //   queryKey: [CONSTANTS.QUERY_KEYS.GET_LOGGED_IN_USER],
-  //   queryFn: masterApi.getLoggedInUser,
-  //   enabled: isLoggedInUser,
-  // });
-  // useEffect(() => {
-  //   if (data) {
-  //     dispatch({
-  //       type: CONSTANTS.GLOBAL_STORE.SET_LOGGEDIN_USER,
-  //       payload: data?.data,
-  //     });
-  //   }
-  // }, [dispatch, data]);
+  const { dispatch } = useGlobalContext();
 
   const { mutate: registerUser, isPending: isPendingUser } = useMutation({
     mutationFn: userApi.registerUser,
@@ -40,6 +27,36 @@ const useUser = ({}) => {
   const { mutate: initiateForgotPassword } = useMutation({
     mutationFn: userApi.forgotPasswordApi,
   });
+
+  const {
+    data: { data: loggedInUser } = {},
+    isError,
+    error,
+  } = useQuery({
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_LOGGED_IN_USER],
+    queryFn: userApi.getLoggedInUser,
+    enabled: !!window.localStorage.getItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN),
+  });
+
+  useEffect(() => {
+    if (loggedInUser) {
+      console.log("🚀 ~ useUser ~ loggedInUser:", loggedInUser.user);
+      dispatch({
+        type: CONSTANTS.GLOBAL_STORE.SET_LOGGED_IN_USER,
+        payload: loggedInUser?.user,
+      });
+    }
+  }, [dispatch, loggedInUser]);
+
+  useEffect(() => {
+    if (isError) {
+      if (error.status === 404) {
+        window.localStorage.clear();
+      }
+    }
+    return () => {};
+  }, [isError, error]);
+
   return useMemo(
     () => ({
       registerUser,

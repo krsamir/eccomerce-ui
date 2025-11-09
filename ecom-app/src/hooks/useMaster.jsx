@@ -52,14 +52,14 @@ const useMaster = ({
   });
 
   const { data: { data: loggedInUser } = {} } = useQuery({
-    queryKey: [CONSTANTS.QUERY_KEYS.GET_LOGGED_IN_USER],
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_LOGGED_IN_USER_MASTER],
     queryFn: masterApi.getLoggedInUser,
     enabled: isLoggedInUser,
   });
   useEffect(() => {
     if (loggedInUser) {
       dispatch({
-        type: CONSTANTS.GLOBAL_STORE.SET_LOGGEDIN_USER,
+        type: CONSTANTS.GLOBAL_STORE.SET_LOGGEDIN_MASTER_USER,
         payload: loggedInUser?.data,
       });
     }

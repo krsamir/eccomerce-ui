@@ -68,6 +68,8 @@ const STATE = {
   FORGOT_PASSWORD: "FORGOT_PASSWORD",
 };
 
+const storage = window.localStorage;
+
 export default function LoginComponent() {
   const {
     isPendingUser,
@@ -111,8 +113,8 @@ export default function LoginComponent() {
   });
 
   const [
-    showPasswordFieldForConfirmationm,
-    setShowPasswordFieldForConfirmationm,
+    showPasswordFieldForConfirmation,
+    setShowPasswordFieldForConfirmation,
   ] = useState(false);
 
   const [step, setStep] = useState(0);
@@ -123,6 +125,19 @@ export default function LoginComponent() {
 
   const handleClose = () => {
     setOpen(false);
+    setFormState(STATE.LOGIN);
+    setLoginValue({ email: "", password: "" });
+    setRegisterValue({
+      email: "",
+      firstName: "",
+      lastName: "",
+      mobile: "",
+      userName: "",
+    });
+    setAccountConfirmation({ email: "", password: "", token: "" });
+    setForgotPassword({ email: "", password: "", token: "" });
+    setShowPasswordFieldForConfirmation(false);
+    setStep(0);
   };
 
   const handleChange = ({ target: { value, name } }, target = STATE.LOGIN) => {
@@ -152,6 +167,7 @@ export default function LoginComponent() {
           onSuccess(response) {
             const data = response.data;
             if (data.status === CONSTANTS.STATUS.SUCCESS) {
+              storage.setItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN, data?.token);
               setLoginValue({ email: "", password: "" });
               handleClose();
             }
@@ -191,7 +207,7 @@ export default function LoginComponent() {
           onSuccess(response) {
             const data = response.data;
             if (data.data) {
-              setShowPasswordFieldForConfirmationm(true);
+              setShowPasswordFieldForConfirmation(true);
             }
           },
         }
@@ -260,6 +276,7 @@ export default function LoginComponent() {
       }
     }
   };
+
   return (
     <React.Fragment>
       <LoginButton variant="outlined" onClick={handleClickOpen}>
@@ -358,10 +375,10 @@ export default function LoginComponent() {
                   name="token"
                   value={accountConfirmation.token}
                   onChange={(e) => handleChange(e, STATE.ACCOUNT_CONFIRMATION)}
-                  disabled={showPasswordFieldForConfirmationm}
+                  disabled={showPasswordFieldForConfirmation}
                 />
 
-                {showPasswordFieldForConfirmationm && (
+                {showPasswordFieldForConfirmation && (
                   <Text
                     variant="outlined"
                     placeholder="Password"
@@ -373,7 +390,7 @@ export default function LoginComponent() {
                   />
                 )}
 
-                {!showPasswordFieldForConfirmationm ? (
+                {!showPasswordFieldForConfirmation ? (
                   <Button
                     variant="contained"
                     onClick={() => handleSubmit(STATE.ACCOUNT_CONFIRMATION)}

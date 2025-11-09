@@ -11,4 +11,6 @@ userApi.loginApi = (data) => axios.post(`${BASE_URL}/login`, data);
 userApi.forgotPasswordApi = (data) =>
   axios.post(`${BASE_URL}/reset`, { email: data.email });
 
+userApi.getLoggedInUser = (data) => axios.get(`${BASE_URL}/me`);
+
 export default userApi;

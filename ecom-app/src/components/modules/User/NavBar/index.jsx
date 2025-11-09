@@ -5,6 +5,8 @@ import i18next from "i18next";
 import { useLocationData } from "@hooks";
 import { useGlobalContext } from "@store";
 import LoginComponent from "../LoginComponent";
+import { Button } from "@mui/material";
+import { t } from "i18next";
 
 const STORAGE_KEY = "lang";
 const LOCATION_KEY = "location";
@@ -63,6 +65,14 @@ const LocationDropdown = styled.select`
   outline: none;
 `;
 
+const TextComponent = styled.span`
+  text-decoration: underline;
+  margin-left: 5px;
+`;
+
+const ButtonComponent = styled(Button)`
+  margin-right: 10px;
+`;
 // const LoginButton = styled.button`
 //   background-color: #fff;
 //   border-radius: 6px;
@@ -105,6 +115,15 @@ function NavBar() {
 
   const [locationId, setLocationId] = useState(() => locs);
 
+  const { state: { user } = {} } = useGlobalContext();
+
+  const handleLogout = () => {
+    storage?.clear();
+    setTimeout(() => {
+      window?.location?.reload();
+    }, 500);
+  };
+
   return (
     <Container>
       <LeftContainer>
@@ -132,7 +151,17 @@ function NavBar() {
         </LocationSelectorWrapper>
       </LeftContainer>
       <RightContainer>
-        <LoginComponent />
+        {!user && <LoginComponent />}
+        {user && (
+          <ButtonComponent variant="contained">
+            {t("hello")} <TextComponent>{user?.name}</TextComponent>
+          </ButtonComponent>
+        )}
+        {user && (
+          <ButtonComponent variant="contained" onClick={() => handleLogout()}>
+            {t("logout")}
+          </ButtonComponent>
+        )}
         <LanguageSelector
           onChange={(e) => {
             i18next.changeLanguage(e.target.value).then(() => {

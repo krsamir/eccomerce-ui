@@ -4,5 +4,7 @@
   "sign_up": "साइन अप करें?",
   "confirm_token": "पुष्टि करें",
   "set_password": "सेट पासवर्ड",
-  "forgot_password": "पासवर्ड भूल गए"
+  "forgot_password": "पासवर्ड भूल गए",
+  "logout": "लॉग आउट",
+  "hello": "नमस्ते"
 }

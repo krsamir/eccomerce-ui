@@ -10,8 +10,10 @@ import { Loader } from "@ecom/ui";
 import { NotFound } from "@ecom/ui";
 import { getRoleById } from "@utils";
 const SuperAdminHome = lazy(() => import("@suadmin"));
+const AdminHome = lazy(() => import("@admin"));
 const Location = lazy(() => import("@suadmin/Location"));
 const Master = lazy(() => import("@modules/Master"));
+const Products = lazy(() => import("@modules/Products"));
 const CreateMaster = lazy(() => import("@modules/Master/CreateMaster"));
 
 const UserHome = lazy(() => import("@user").then((m) => ({ default: m.Home })));
@@ -60,6 +62,22 @@ const router = createBrowserRouter([
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
               >
                 <CreateMaster />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {
+        path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.ADMIN.MAIN}`,
+        element: <AdminHome />,
+        children: [
+          {
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.ADMIN.PRODUCT}`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.ADMIN)]}
+              >
+                <Products />
               </ProtectedRoute>
             ),
           },

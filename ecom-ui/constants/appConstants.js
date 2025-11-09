@@ -15,6 +15,15 @@ export const APP_CONSTANTS = Object.freeze({
       },
     ],
   },
+  ADMIN: {
+    SIDEBAR: [
+      {
+        id: "b5114f33-ddc3-4fcd-9347-91a6cd17f222",
+        name: "Product",
+        route: `${ROUTES.ADMINISTRATION}/${ROUTES.ADMIN.MAIN}/${ROUTES.ADMIN.PRODUCT}`,
+      },
+    ],
+  },
   QUERY_KEYS: {
     GET_LOCATION_QUERY: "GET_LOCATION_QUERY",
     GET_ALL_MASTER: "GET_ALL_MASTER",

@@ -22,6 +22,7 @@ export default defineConfig({
       "@home": path.join(__dirname, "./src/components/Home"),
       "@assets": path.join(__dirname, "./src/assets"),
       "@suadmin": path.join(__dirname, "./src/components/SuperAdmin"),
+      "@admin": path.join(__dirname, "./src/components/Admin"),
       "@utils": path.join(__dirname, "./src/utils"),
       "@modules": path.join(__dirname, "./src/components/modules"),
       "@store": path.join(__dirname, "./src/store/GlobalContext.jsx"),

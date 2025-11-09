@@ -9,6 +9,10 @@ const ROUTES = {
     LOCATION: "location",
     MASTER: "master",
   },
+  ADMIN: {
+    MAIN: "admin",
+    PRODUCT: "product",
+  },
 };
 
 export default ROUTES;

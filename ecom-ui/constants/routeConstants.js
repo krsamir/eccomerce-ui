@@ -8,6 +8,7 @@ const ROUTES = {
     MAIN: "super-admin",
     LOCATION: "location",
     MASTER: "master",
+    PRODUCT: "product",
   },
   ADMIN: {
     MAIN: "admin",

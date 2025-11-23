@@ -3,5 +3,15 @@ import locationApi from "./location.api";
 import masterApi from "./master.api";
 import entitiesApi from "./entities.api";
 import userApi from "./user.api";
+import hsnsApi from "./hsns.api";
+import unitsApi from "./units.api";
 
-export { authenticationApi, locationApi, masterApi, entitiesApi, userApi };
+export {
+  authenticationApi,
+  locationApi,
+  masterApi,
+  entitiesApi,
+  userApi,
+  hsnsApi,
+  unitsApi,
+};

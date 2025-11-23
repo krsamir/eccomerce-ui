@@ -80,8 +80,8 @@ function CreateMaster() {
       setValue("lastName", user.lastName);
       setValue("mobile", user.mobile);
       setValue("roles", user.role?.id ?? "");
-      setValue("isActive", user.isActive);
-      setValue("isDeleted", user.isDeleted);
+      setValue("isActive", user.isActive ? 1 : 0);
+      setValue("isDeleted", user.isDeleted ? 1 : 0);
       setValue("entityId", user.entityId);
       setValue("token", user.token ? user.token : "N/A");
       setValue("validTill", user.validTill ? user.validTill : "N/A");

@@ -7,10 +7,13 @@ import setupAxiosInterceptors from "./components/Authentication/interceptor";
 import { GlobalProvider } from "@store";
 import { ThemeProvider } from "@emotion/react";
 import "./i18/Internationalization";
+
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false, retry: false } },
 });
+
 setupAxiosInterceptors();
+
 function App() {
   const MUItheme = createTheme({
     typography: {},

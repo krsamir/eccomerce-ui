@@ -3,5 +3,15 @@ import useLocationData from "./useLocationData";
 import useMaster from "./useMaster";
 import useEntity from "./useEntity";
 import useUser from "./useUser";
+import useBarcodeScan from "./helpers/useBarcodeScan";
+import useUnits from "./useUnits";
 
-export { useAuthentication, useLocationData, useMaster, useEntity, useUser };
+export {
+  useAuthentication,
+  useLocationData,
+  useMaster,
+  useEntity,
+  useUser,
+  useBarcodeScan,
+  useUnits,
+};

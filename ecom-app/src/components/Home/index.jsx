@@ -11,6 +11,11 @@ const FullWidthContainer = styled.div`
   display: flex;
   width: 100%;
   height: calc(100vh - 60px);
+  padding-top: 70px;
+  position: fixed;
+  left: 0;
+  top: 54;
+  bottom: 0;
 `;
 const LeftContainer = styled.div`
   min-width: 200px;
@@ -23,6 +28,7 @@ const LeftContainer = styled.div`
 const RightContainer = styled.div`
   padding: 20px;
   width: calc(100vw - 250px);
+  overflow-y: auto;
   /* flex: 7; */
 `;
 

@@ -15,7 +15,7 @@ const Container = styled.div`
   background-color: ${({ theme: { p1 } }) => p1};
   height: 60px;
   box-sizing: border-box;
-  position: sticky;
+  position: fixed;
   z-index: 999;
 `;
 const LeftContainer = styled.div`

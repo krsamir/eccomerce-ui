@@ -4,6 +4,12 @@ export const APP_CONSTANTS = Object.freeze({
   SUPER_ADMIN: {
     SIDEBAR: [
       {
+        id: "b5114f33-ddc3-4fcd-9347-91a6cd17f222",
+        name: "Product",
+        route: `${ROUTES.ADMINISTRATION}/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.PRODUCT}`,
+      },
+
+      {
         id: "ebb6df4a-ce4a-481d-be18-72eaab290ebf",
         name: "Location",
         route: `${ROUTES.ADMINISTRATION}/${ROUTES.SUPER_ADMIN.MAIN}/${ROUTES.SUPER_ADMIN.LOCATION}`,
@@ -33,6 +39,8 @@ export const APP_CONSTANTS = Object.freeze({
     GET_LOGGED_IN_USER_MASTER: "GET_LOGGED_IN_USER_MASTER",
     GET_ENTITY_BY_ID: "GET_ENTITY_BY_ID",
     GET_LOGGED_IN_USER: "GET_LOGGED_IN_USER",
+    GET_HSN_BY_CODE_AND_DESCRIPTION: "GET_HSN_BY_CODE_AND_DESCRIPTION",
+    GET_ALL_UNITS: "GET_ALL_UNITS",
   },
   GLOBAL_STORE: {
     SET_ROLES: "SET_ROLES",
@@ -40,5 +48,6 @@ export const APP_CONSTANTS = Object.freeze({
     SET_LOGGEDIN_MASTER_USER: "SET_LOGGEDIN_MASTER_USER",
     SET_LOCATION_LIST: "SET_LOCATION_LIST",
     SET_LOGGED_IN_USER: "SET_LOGGED_IN_USER",
+    SET_UNITS: "SET_UNITS",
   },
 });

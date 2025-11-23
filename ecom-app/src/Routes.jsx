@@ -15,6 +15,7 @@ const Location = lazy(() => import("@suadmin/Location"));
 const Master = lazy(() => import("@modules/Master"));
 const Products = lazy(() => import("@modules/Products"));
 const CreateMaster = lazy(() => import("@modules/Master/CreateMaster"));
+const ProductsCreate = lazy(() => import("@modules/Products/Product.create"));
 
 const UserHome = lazy(() => import("@user").then((m) => ({ default: m.Home })));
 
@@ -42,6 +43,26 @@ const router = createBrowserRouter([
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
               >
                 <Location />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT}`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <Products />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT}/create`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <ProductsCreate />
               </ProtectedRoute>
             ),
           },
@@ -78,6 +99,16 @@ const router = createBrowserRouter([
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.ADMIN)]}
               >
                 <Products />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.ADMIN.PRODUCT}/create`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.ADMIN)]}
+              >
+                <ProductsCreate />
               </ProtectedRoute>
             ),
           },

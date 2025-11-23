@@ -11,12 +11,14 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Editor from "../../Editor";
+import { useRef } from "react";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const TemplateDialog = () => {
+  const tempRef = useRef(null);
 
-export default function TemplateDialog() {
   const [open, setOpen] = React.useState(true);
 
   const handleClickOpen = () => {
@@ -63,12 +65,13 @@ export default function TemplateDialog() {
           </Toolbar>
         </AppBar>
         <>
-          <Editor />
+          <Editor ref={tempRef} />
         </>
       </Dialog>
     </React.Fragment>
   );
-}
+};
+export default TemplateDialog;
 
 const ButtonComponent = styled(Button)`
   margin: 10px 0;

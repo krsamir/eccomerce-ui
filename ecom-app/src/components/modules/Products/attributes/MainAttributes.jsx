@@ -16,7 +16,7 @@ import { useGlobalContext } from "@store";
 import TemplateDialog from "./Template";
 
 function MainAttributes({ form }) {
-  const handlerRef = useRef(null);
+  const handlerRef = useRef(false);
 
   const { state: { units } = {} } = useGlobalContext();
 

@@ -5,6 +5,7 @@ import useEntity from "./useEntity";
 import useUser from "./useUser";
 import useBarcodeScan from "./helpers/useBarcodeScan";
 import useUnits from "./useUnits";
+import useTemplates from "./useTemplates";
 
 export {
   useAuthentication,
@@ -14,4 +15,5 @@ export {
   useUser,
   useBarcodeScan,
   useUnits,
+  useTemplates,
 };

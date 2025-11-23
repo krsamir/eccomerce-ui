@@ -4,6 +4,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import styled from "@emotion/styled";
 import { useTemplates } from "@hooks";
+import { useImperativeHandle } from "react";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -26,52 +27,68 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-const Editor = React.forwardRef((props, ref) => {
-  const quill = useRef(null);
-  const { templates } = useTemplates({ enabled: !ref.current });
+const Editor = React.forwardRef(
+  ({ form, isOpenedOnce, setIsOpenedOnce }, ref) => {
+    const quill = useRef(null);
+    const { templates } = useTemplates({ enabled: !isOpenedOnce });
 
-  useEffect(() => {
-    ref.current = true;
+    useEffect(() => {
+      setIsOpenedOnce(true);
 
-    const options = {
-      debug: false,
-      modules: {
-        toolbar: toolbarOptions,
-      },
-      placeholder: "Compose an epic...",
-      theme: "snow",
-    };
-    if (!quill.current) {
-      quill.current = new Quill("#editor", options);
-    }
-    return () => {};
-  }, []);
+      const options = {
+        debug: false,
+        modules: {
+          toolbar: toolbarOptions,
+        },
+        placeholder: "Compose an epic...",
+        theme: "snow",
+      };
+      if (!quill.current) {
+        quill.current = new Quill("#editor", options);
+      }
+      return () => {};
+    }, []);
 
-  return (
-    <Container>
-      <LeftContainer>
-        <MapContainer>
-          {templates.map(({ id, name, content: html }) => (
-            <TextWrapper
-              key={id}
-              onClick={() =>
-                quill.current?.clipboard.dangerouslyPasteHTML(html)
-              }
-            >
-              {name}
-            </TextWrapper>
-          ))}
-        </MapContainer>
-      </LeftContainer>
-      <EditorContainer>
-        <div id="editor"></div>
-        <button onClick={() => console.info(quill.current.getSemanticHTML())}>
-          GET HTML
-        </button>
-      </EditorContainer>
-    </Container>
-  );
-});
+    useEffect(() => {
+      if (form.watch("description")) {
+        quill.current?.clipboard.dangerouslyPasteHTML(
+          form.watch("description")
+        );
+      }
+    }, [form.watch("description")]);
+
+    const getHtmlContent = () =>
+      quill.current
+        .getSemanticHTML()
+        ?.replaceAll("background-color: rgb(255, 255, 255);", "");
+
+    useImperativeHandle(ref, () => ({
+      getHtmlContent: getHtmlContent,
+    }));
+
+    return (
+      <Container>
+        <LeftContainer>
+          <MapContainer>
+            {templates.map(({ id, name, content: html }) => (
+              <TextWrapper
+                key={id}
+                onClick={() =>
+                  quill.current?.clipboard.dangerouslyPasteHTML(html)
+                }
+              >
+                {name}
+              </TextWrapper>
+            ))}
+          </MapContainer>
+        </LeftContainer>
+        <EditorContainer>
+          <div id="editor"></div>
+        </EditorContainer>
+      </Container>
+    );
+  }
+);
 
 export default Editor;
 

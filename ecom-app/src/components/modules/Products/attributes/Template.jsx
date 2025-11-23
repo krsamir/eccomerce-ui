@@ -11,22 +11,27 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Editor from "../../Editor";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const TemplateDialog = () => {
-  const tempRef = useRef(null);
+const TemplateDialog = ({ form, openTemplates, setOpenTemplates }) => {
+  const tempRef = useRef({ getHtmlContent: () => {} });
 
-  const [open, setOpen] = React.useState(true);
+  const [isOpenedOnce, setIsOpenedOnce] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenTemplates(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenTemplates(false);
+  };
+
+  const addToDescription = () => {
+    form.setValue("description", tempRef?.current?.getHtmlContent());
+    handleClose();
   };
 
   return (
@@ -37,7 +42,7 @@ const TemplateDialog = () => {
 
       <Dialog
         fullScreen
-        open={open}
+        open={openTemplates}
         onClose={handleClose}
         slots={{
           transition: Transition,
@@ -59,13 +64,19 @@ const TemplateDialog = () => {
             <Button color="inherit" onClick={handleClose}>
               Cancel
             </Button>
-            <Button color="inherit" onClick={handleClose}>
+            <Button color="inherit" onClick={addToDescription}>
               Add to Description
             </Button>
           </Toolbar>
         </AppBar>
         <>
-          <Editor ref={tempRef} />
+          <Editor
+            ref={tempRef}
+            addToDescription={addToDescription}
+            isOpenedOnce={isOpenedOnce}
+            setIsOpenedOnce={setIsOpenedOnce}
+            form={form}
+          />
         </>
       </Dialog>
     </React.Fragment>

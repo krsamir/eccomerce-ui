@@ -18,15 +18,17 @@ import TemplateDialog from "./Template";
 function MainAttributes({ form }) {
   const handlerRef = useRef(false);
 
+  const [lastOptions, setLastOptions] = useState([]);
+  const [openTemplates, setOpenTemplates] = React.useState(false);
+
   const { state: { units } = {} } = useGlobalContext();
 
   const {
     control,
     setValue,
     formState: { errors },
+    watch,
   } = form;
-
-  const [lastOptions, setLastOptions] = useState([]);
 
   const promiseOptions = (query) =>
     new Promise((resolve, reject) => {
@@ -178,27 +180,22 @@ function MainAttributes({ form }) {
           />
         </Container>
       </Wrapper>
+
       <Wrapper>
-        <Controller
-          name="description"
-          control={control}
-          rules={{
-            required: "Description cannot be empty.",
-          }}
-          render={({ field }) => (
-            <TextField
-              placeholder="DESCRIPTION"
-              {...field}
-              variant="filled"
-              fullWidth
-              multiline
-              rows={12}
-              error={Boolean(errors?.description)}
-              helperText={errors?.description?.message}
-            />
+        <DescriptionContainer onClick={() => setOpenTemplates(true)}>
+          {watch("description") ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: watch("description") }}
+            ></div>
+          ) : (
+            <GrayText>DESCRIPTION</GrayText>
           )}
+        </DescriptionContainer>
+        <TemplateDialog
+          form={form}
+          openTemplates={openTemplates}
+          setOpenTemplates={setOpenTemplates}
         />
-        <TemplateDialog />
       </Wrapper>
 
       <Wrapper>
@@ -274,4 +271,16 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const DescriptionContainer = styled.div`
+  background-color: rgba(0, 0, 0, 0.06);
+  width: 600px;
+  height: 310px;
+  border-radius: 4px;
+  overflow-y: auto;
+  padding: 25px 12px 12px 8px;
+`;
+
+const GrayText = styled.span`
+  color: rgb(152, 152, 152);
+`;
 export default MainAttributes;

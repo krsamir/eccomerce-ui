@@ -36,9 +36,9 @@ const TemplateDialog = ({ form, openTemplates, setOpenTemplates }) => {
 
   return (
     <React.Fragment>
-      <ButtonComponent fullWidth variant="contained" onClick={handleClickOpen}>
+      {/* <ButtonComponent fullWidth variant="contained" onClick={handleClickOpen}>
         Description Templates
-      </ButtonComponent>
+      </ButtonComponent> */}
 
       <Dialog
         fullScreen

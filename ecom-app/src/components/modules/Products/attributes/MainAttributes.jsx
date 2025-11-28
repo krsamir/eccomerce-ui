@@ -1,6 +1,7 @@
 import {
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -64,173 +65,184 @@ function MainAttributes({ form }) {
         <Title>Product Attributes</Title>
       </Wrapper>
       <Wrapper>
-        <Controller
-          name="name"
-          control={control}
-          rules={{
-            required: "Name cannot be empty.",
-          }}
-          render={({ field }) => (
-            <TextField
-              placeholder="NAME"
-              {...field}
-              variant="filled"
-              autoComplete="off"
-              fullWidth
-              error={Boolean(errors?.name)}
-              helperText={errors?.name?.message}
-            />
-          )}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Controller
-          name="hsnId"
-          control={control}
-          render={({ field }) => (
-            <AsyncSelect
-              cacheOptions
-              defaultOptions={lastOptions}
-              loadOptions={promiseOptions}
-              placeholder="Search HSN"
-              onChange={(value) => setValue("hsnId", value.value)}
-            />
-          )}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Controller
-          name="hindiName"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              placeholder="हिंदी नाम"
-              {...field}
-              variant="filled"
-              autoComplete="off"
-              fullWidth
-            />
-          )}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Controller
-          name="uuid"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              placeholder="UUID"
-              {...field}
-              variant="filled"
-              autoComplete="off"
-              fullWidth
-            />
-          )}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Controller
-          name="barcode"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              placeholder="BARCODE"
-              {...field}
-              variant="filled"
-              autoComplete="off"
-              fullWidth
-            />
-          )}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Container>
-          <Controller
-            name="unit"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                placeholder="UNIT"
-                sx={{ mr: "10px" }}
-                {...field}
-                variant="filled"
-                autoComplete="off"
-                fullWidth
-              />
-            )}
-          />
-          <Controller
-            name="unitType"
-            control={control}
-            render={({ field }) => (
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">UNIT TYPE</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: "Name cannot be empty.",
+              }}
+              render={({ field }) => (
+                <TextField
+                  placeholder="NAME"
                   {...field}
                   variant="filled"
-                >
-                  {units.map(({ id, name }) => (
-                    <MenuItem value={id}>{name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          />
-        </Container>
-      </Wrapper>
-
-      <Wrapper>
-        <DescriptionContainer onClick={() => setOpenTemplates(true)}>
-          {watch("description") ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: watch("description") }}
-            ></div>
-          ) : (
-            <GrayText>DESCRIPTION</GrayText>
-          )}
-        </DescriptionContainer>
-        <TemplateDialog
-          form={form}
-          openTemplates={openTemplates}
-          setOpenTemplates={setOpenTemplates}
-        />
-      </Wrapper>
-
-      <Wrapper>
-        <Container>
-          <CheckBoxWrapper>
-            <Label>Is Active ?</Label>
-            <Controller
-              name="isActive"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="checkbox"
-                  {...field}
-                  onChange={field.onChange}
-                  checked={field.value}
+                  autoComplete="off"
+                  fullWidth
+                  error={Boolean(errors?.name)}
+                  helperText={errors?.name?.message}
                 />
               )}
             />
-          </CheckBoxWrapper>
-          <CheckBoxWrapper>
-            <Label>Is Deleted ?</Label>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
             <Controller
-              name="isDeleted"
+              name="hindiName"
               control={control}
               render={({ field }) => (
-                <input
-                  type="checkbox"
+                <TextField
+                  placeholder="हिंदी नाम"
                   {...field}
-                  onChange={field.onChange}
-                  checked={field.value}
+                  variant="filled"
+                  autoComplete="off"
+                  fullWidth
                 />
               )}
             />
-          </CheckBoxWrapper>
-        </Container>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            <Controller
+              name="uuid"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  placeholder="UUID"
+                  {...field}
+                  variant="filled"
+                  autoComplete="off"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            {" "}
+            <Controller
+              name="barcode"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  placeholder="BARCODE"
+                  {...field}
+                  variant="filled"
+                  autoComplete="off"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            <Controller
+              name="unit"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  placeholder="UNIT"
+                  sx={{ mr: "10px" }}
+                  {...field}
+                  variant="filled"
+                  autoComplete="off"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            {" "}
+            <Controller
+              name="unitType"
+              control={control}
+              render={({ field }) => (
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    UNIT TYPE
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    {...field}
+                    variant="filled"
+                  >
+                    {units.map(({ id, name }) => (
+                      <MenuItem value={id}>{name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            <Controller
+              name="hsnId"
+              control={control}
+              render={({ field }) => (
+                <ReactSelect
+                  className="react-select-box"
+                  classNamePrefix="react-select"
+                  cacheOptions
+                  defaultOptions={lastOptions}
+                  loadOptions={promiseOptions}
+                  placeholder="Search HSN"
+                  onChange={(value) => setValue("hsnId", value.value)}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            <Container>
+              <CheckBoxWrapper>
+                <Label>Is Active ?</Label>
+                <Controller
+                  name="isActive"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="checkbox"
+                      {...field}
+                      onChange={field.onChange}
+                      checked={field.value}
+                    />
+                  )}
+                />
+              </CheckBoxWrapper>
+              <CheckBoxWrapper>
+                <Label>Is Deleted ?</Label>
+                <Controller
+                  name="isDeleted"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="checkbox"
+                      {...field}
+                      onChange={field.onChange}
+                      checked={field.value}
+                    />
+                  )}
+                />
+              </CheckBoxWrapper>
+            </Container>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ mt: "20px" }}>
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+            <DescriptionContainer onClick={() => setOpenTemplates(true)}>
+              {watch("description") ? (
+                <div
+                  dangerouslySetInnerHTML={{ __html: watch("description") }}
+                ></div>
+              ) : (
+                <GrayText>DESCRIPTION</GrayText>
+              )}
+            </DescriptionContainer>
+            <TemplateDialog
+              form={form}
+              openTemplates={openTemplates}
+              setOpenTemplates={setOpenTemplates}
+            />
+          </Grid>
+        </Grid>
       </Wrapper>
     </>
   );
@@ -238,7 +250,7 @@ function MainAttributes({ form }) {
 
 const Wrapper = styled.div`
   padding: 10px 10px 10px 0;
-  width: 600px;
+  width: 100%;
   :last-child {
     padding-bottom: 20px;
     border-bottom: 2px inset #ededed;
@@ -249,7 +261,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.span`
+const Title = styled.strong`
   font-size: 22px;
 `;
 
@@ -269,6 +281,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 100%;
+  justify-content: space-around;
 `;
 
 const DescriptionContainer = styled.div`
@@ -283,4 +297,14 @@ const DescriptionContainer = styled.div`
 const GrayText = styled.span`
   color: rgb(152, 152, 152);
 `;
+
+const ReactSelect = styled(AsyncSelect)`
+  .react-select__menu {
+    z-index: 700 !important;
+  }
+  .react-select__control {
+    height: 58px !important;
+  }
+`;
+
 export default MainAttributes;

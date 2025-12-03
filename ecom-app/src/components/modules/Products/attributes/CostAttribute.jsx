@@ -21,14 +21,14 @@ function CostAttribute({ form, costsForm }) {
           sx={{ ml: "20px" }}
           onClick={() =>
             append({
-              min_qty: "",
-              max_qty: "",
-              purchase_cost: "",
-              cost_for_sell: "",
-              actual_cost: "",
+              minQty: "",
+              maxQty: "",
+              purchaseCost: "",
+              costForSell: "",
+              actualCost: "",
               currency: "INR",
-              valid_from: "",
-              valid_to: "",
+              validFrom: "",
+              validTo: "",
               costId: "",
             })
           }
@@ -38,11 +38,11 @@ function CostAttribute({ form, costsForm }) {
       </Wrapper>
 
       {costFields.map(({ id }, index) => (
-        <Wrapper key={id}>
+        <Wrapper key={id} className="item">
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.cost_for_sell`}
+                name={`costs.${index}.costForSell`}
                 control={control}
                 rules={{
                   required: "Cost cannot be empty.",
@@ -50,20 +50,21 @@ function CostAttribute({ form, costsForm }) {
                 render={({ field }) => (
                   <TextField
                     type="number"
+                    label="COST(SELL)"
                     placeholder="COST(SELL)"
                     {...field}
                     variant="filled"
                     autoComplete="off"
                     fullWidth
-                    error={Boolean(errors?.costs?.[index]?.cost_for_sell)}
-                    helperText={errors?.costs?.[index]?.cost_for_sell?.message}
+                    error={Boolean(errors?.costs?.[index]?.costForSell)}
+                    helperText={errors?.costs?.[index]?.costForSell?.message}
                   />
                 )}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.purchase_cost`}
+                name={`costs.${index}.purchaseCost`}
                 control={control}
                 rules={{
                   required: "Purchase Cost cannot be empty.",
@@ -71,24 +72,26 @@ function CostAttribute({ form, costsForm }) {
                 render={({ field }) => (
                   <TextField
                     type="number"
+                    label="PURCHASE COST"
                     placeholder="PURCHASE COST"
                     {...field}
                     variant="filled"
                     autoComplete="off"
                     fullWidth
-                    error={Boolean(errors?.costs?.[index]?.purchase_cost)}
-                    helperText={errors?.costs?.[index]?.purchase_cost?.message}
+                    error={Boolean(errors?.costs?.[index]?.purchaseCost)}
+                    helperText={errors?.costs?.[index]?.purchaseCost?.message}
                   />
                 )}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.actual_cost`}
+                name={`costs.${index}.actualCost`}
                 control={control}
                 render={({ field }) => (
                   <TextField
                     type="number"
+                    label="ACTUAL COST"
                     placeholder="ACTUAL COST"
                     {...field}
                     variant="filled"
@@ -105,6 +108,7 @@ function CostAttribute({ form, costsForm }) {
                 render={({ field }) => (
                   <TextField
                     disabled
+                    label="CURRENCY"
                     placeholder="CURRENCY"
                     {...field}
                     variant="filled"
@@ -116,11 +120,12 @@ function CostAttribute({ form, costsForm }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.min_qty`}
+                name={`costs.${index}.minQty`}
                 control={control}
                 render={({ field }) => (
                   <TextField
                     type="number"
+                    label="MINIMUM QUANTITY"
                     placeholder="MINIMUM QUANTITY"
                     {...field}
                     variant="filled"
@@ -132,11 +137,12 @@ function CostAttribute({ form, costsForm }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.max_qty`}
+                name={`costs.${index}.maxQty`}
                 control={control}
                 render={({ field }) => (
                   <TextField
                     type="number"
+                    label="MAXIMUM QUANTITY"
                     placeholder="MAXIMUM QUANTITY"
                     {...field}
                     variant="filled"
@@ -148,13 +154,14 @@ function CostAttribute({ form, costsForm }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.valid_from`}
+                name={`costs.${index}.validFrom`}
                 control={control}
                 render={({ field }) => (
                   <TextField
                     type="date"
-                    placeholder="VALID FROM"
+                    label="VALID FROM"
                     {...field}
+                    value={field.value ?? ""}
                     variant="filled"
                     autoComplete="off"
                     fullWidth
@@ -164,13 +171,14 @@ function CostAttribute({ form, costsForm }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
-                name={`costs.${index}.valid_to`}
+                name={`costs.${index}.validTo`}
                 control={control}
                 render={({ field }) => (
                   <TextField
                     type="date"
-                    placeholder="VALID TO"
+                    label="VALID TO"
                     {...field}
+                    value={field.value ?? ""}
                     variant="filled"
                     autoComplete="off"
                     fullWidth
@@ -198,7 +206,7 @@ function CostAttribute({ form, costsForm }) {
 }
 
 const Wrapper = styled.div`
-  padding: 20px 10px 10px 0;
+  padding: 20px 10px 20px 0;
   width: 100%;
   :last-child {
     padding-bottom: 20px;
@@ -207,6 +215,9 @@ const Wrapper = styled.div`
   &.first {
     border-bottom: 2px inset #ededed;
     margin: 20px 0;
+  }
+  &.item {
+    border-bottom: 2px inset #ededed;
   }
 `;
 

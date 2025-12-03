@@ -30,7 +30,9 @@ const TemplateDialog = ({ form, openTemplates, setOpenTemplates }) => {
   };
 
   const addToDescription = () => {
-    form.setValue("description", tempRef?.current?.getHtmlContent());
+    form.setValue("description", tempRef?.current?.getHtmlContent(), {
+      shouldDirty: true,
+    });
     handleClose();
   };
 

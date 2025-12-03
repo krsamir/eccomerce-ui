@@ -6,6 +6,7 @@ import userApi from "./user.api";
 import hsnsApi from "./hsns.api";
 import unitsApi from "./units.api";
 import templatesApi from "./templates.api";
+import productsApi from "./products.api";
 
 export {
   authenticationApi,
@@ -16,4 +17,5 @@ export {
   hsnsApi,
   unitsApi,
   templatesApi,
+  productsApi,
 };

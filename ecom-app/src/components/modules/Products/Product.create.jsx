@@ -5,9 +5,26 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import CostAttribute from "./attributes/CostAttribute";
 import StockAttributes from "./attributes/StockAttributes";
+import { useProducts } from "@hooks";
+import { getDirtyFormFields } from "@ecom/ui/utils";
+import { useSearchParams } from "react-router";
 
 function ProductCreate() {
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const [searchParams] = useSearchParams();
+
+  const productId = searchParams.get("id");
+
+  const {
+    createProduct,
+    isProductCreationPending,
+    getProductById,
+    lastOptionsHsn,
+    setLastOptionsHsn,
+  } = useProducts({
+    fetchStockMetaData: false,
+  });
 
   const form = useForm({
     defaultValues: {
@@ -24,14 +41,14 @@ function ProductCreate() {
       hindiName: "",
       costs: [
         {
-          min_qty: "",
-          max_qty: "",
-          purchase_cost: "",
-          cost_for_sell: "",
-          actual_cost: "",
+          minQty: "",
+          maxQty: "",
+          purchaseCost: "",
+          costForSell: "",
+          actualCost: "",
           currency: "INR",
-          valid_from: "",
-          valid_to: "",
+          validFrom: "",
+          validTo: "",
           costId: "",
         },
       ],
@@ -49,7 +66,40 @@ function ProductCreate() {
     name: "costs",
   });
 
-  const onSubmit = (data) => console.log(data);
+  useEffect(() => {
+    if (productId) {
+      getProductById(productId, form.setValue);
+    }
+    return () => {};
+  }, [productId]);
+
+  const onSubmit = async (data) => {
+    const payload = getDirtyFormFields(data, form.formState.dirtyFields);
+    console.log("🚀 ~ onSubmit ~ payload:", payload);
+    if (payload?.id) {
+    } else {
+      try {
+        console.info(payload);
+        const { data } = await createProduct({
+          ...payload,
+          id: undefined,
+          uuid: undefined,
+          costs: payload.costs.map((val) => ({
+            ...val,
+            costId: undefined,
+            currency: "INR",
+          })),
+        });
+        form.reset({}, { keepValues: false });
+        console.log("🚀 ~ onSubmit ~ data:", data?.data);
+      } catch (error) {
+        // console.log("🚀 ~ onSubmit ~ error:", error?.response?.data);
+        console.info(error?.response?.data?.validation?.body);
+        console.info(error?.response?.data?.validation?.body?.message);
+      }
+    }
+  };
+
   const { handleSubmit } = form;
 
   // async function hashString(payload) {
@@ -74,13 +124,19 @@ function ProductCreate() {
           <Button
             variant="contained"
             onClick={() => handleSubmit(onSubmit)()}
-            disabled={isDisabled}
+            disabled={isDisabled || isProductCreationPending}
           >
             SAVE
           </Button>
-          <MainAttributes form={form} />
-          <CostAttribute form={form} costsForm={costsForm} />
-          <StockAttributes form={form} />
+          <BottomComponent>
+            <MainAttributes
+              form={form}
+              lastOptions={lastOptionsHsn}
+              setLastOptions={setLastOptionsHsn}
+            />
+            <CostAttribute form={form} costsForm={costsForm} />
+            <StockAttributes form={form} />
+          </BottomComponent>
         </MainContainer>
       </form>
     </div>
@@ -93,6 +149,13 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+`;
+
+const BottomComponent = styled.div`
+  margin-top: 20px;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  width: 100%;
 `;
 
 export default ProductCreate;

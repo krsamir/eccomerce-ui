@@ -6,6 +6,7 @@ import useUser from "./useUser";
 import useBarcodeScan from "./helpers/useBarcodeScan";
 import useUnits from "./useUnits";
 import useTemplates from "./useTemplates";
+import useProducts from "./useProducts";
 
 export {
   useAuthentication,
@@ -16,4 +17,5 @@ export {
   useBarcodeScan,
   useUnits,
   useTemplates,
+  useProducts,
 };

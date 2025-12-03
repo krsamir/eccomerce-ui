@@ -16,10 +16,9 @@ import { useBarcodeScan } from "@hooks";
 import { useGlobalContext } from "@store";
 import TemplateDialog from "./Template";
 
-function MainAttributes({ form }) {
+function MainAttributes({ form, lastOptions, setLastOptions }) {
   const handlerRef = useRef(false);
 
-  const [lastOptions, setLastOptions] = useState([]);
   const [openTemplates, setOpenTemplates] = React.useState(false);
 
   const { state: { units } = {} } = useGlobalContext();
@@ -75,6 +74,7 @@ function MainAttributes({ form }) {
               }}
               render={({ field }) => (
                 <TextField
+                  label="NAME"
                   placeholder="NAME"
                   {...field}
                   variant="filled"
@@ -92,6 +92,7 @@ function MainAttributes({ form }) {
               control={control}
               render={({ field }) => (
                 <TextField
+                  label="हिंदी नाम"
                   placeholder="हिंदी नाम"
                   {...field}
                   variant="filled"
@@ -107,7 +108,9 @@ function MainAttributes({ form }) {
               control={control}
               render={({ field }) => (
                 <TextField
+                  label="UUID"
                   placeholder="UUID"
+                  disabled
                   {...field}
                   variant="filled"
                   autoComplete="off"
@@ -123,6 +126,7 @@ function MainAttributes({ form }) {
               control={control}
               render={({ field }) => (
                 <TextField
+                  label="BARCODE"
                   placeholder="BARCODE"
                   {...field}
                   variant="filled"
@@ -138,6 +142,8 @@ function MainAttributes({ form }) {
               control={control}
               render={({ field }) => (
                 <TextField
+                  type="number"
+                  label="UNIT"
                   placeholder="UNIT"
                   sx={{ mr: "10px" }}
                   {...field}
@@ -184,7 +190,9 @@ function MainAttributes({ form }) {
                   defaultOptions={lastOptions}
                   loadOptions={promiseOptions}
                   placeholder="Search HSN"
-                  onChange={(value) => setValue("hsnId", value.value)}
+                  onChange={(value) =>
+                    setValue("hsnId", value.value, { shouldDirty: true })
+                  }
                 />
               )}
             />

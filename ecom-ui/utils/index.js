@@ -46,3 +46,25 @@ export const capitalize = (str) => {
   if (!str) return "";
   return str[0].toUpperCase() + str.slice(1);
 };
+
+export const getDirtyFormFields = (data, dirty) => {
+  if (Array.isArray(dirty)) {
+    return dirty.map((d, index) => getDirtyFormFields(data[index], d));
+  }
+
+  if (typeof dirty === "object" && dirty !== null) {
+    const result = {};
+    for (const key in dirty) {
+      if (dirty[key] === true) {
+        result[key] = data[key];
+      } else if (typeof dirty[key] === "object") {
+        result[key] = getDirtyFormFields(data[key], dirty[key]);
+      }
+    }
+    return result;
+  }
+
+  if (dirty === true) return data;
+
+  return undefined;
+};

@@ -21,7 +21,7 @@ function Products() {
     () =>
       `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${map.get(getRole(roleKey))}/${
         CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT
-      }/create`,
+      }/create?id=13dcec48-56a0-4cde-8adf-29b245a4c0a9`,
     []
   );
 

@@ -2,19 +2,18 @@ import { Grid, TextField } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import styled from "@emotion/styled";
-import { hsnsApi } from "@api";
-import { useBarcodeScan } from "@hooks";
-import { useGlobalContext } from "@store";
 import AutoSelect from "react-select/creatable";
+import { useProducts } from "@hooks";
 
 function StockAttributes({ form }) {
-  const { state: { units } = {} } = useGlobalContext();
+  const { metaData, isLoadingMetaData } = useProducts({
+    fetchStockMetaData: true,
+  });
 
   const {
     control,
     setValue,
     formState: { errors },
-    watch,
   } = form;
 
   return (
@@ -33,6 +32,7 @@ function StockAttributes({ form }) {
               }}
               render={({ field }) => (
                 <TextField
+                  label="QUANTITY AVAILABLE"
                   placeholder="QUANTITY AVAILABLE"
                   type="number"
                   {...field}
@@ -52,6 +52,7 @@ function StockAttributes({ form }) {
               render={({ field }) => (
                 <TextField
                   type="number"
+                  label="REORDER LEVEL"
                   placeholder="REORDER LEVEL"
                   {...field}
                   variant="filled"
@@ -69,13 +70,15 @@ function StockAttributes({ form }) {
                 <ReactSelect
                   className="react-select-box"
                   classNamePrefix="react-select"
-                  placeholder="CUSTOMER"
-                  options={[]}
+                  placeholder="SUPPLIER NAME"
+                  options={metaData.supplierName}
                   onChange={field.onChange}
                   value={field.value}
-                  // onCreateOption={(data) => console.info(data)}
-                  // isLoading={isLoadingCustomer}
-                  // isDisabled={isPaymentDone || isInvoiceSaved}
+                  inputValue={field.value ?? ""}
+                  onCreateOption={(data) =>
+                    setValue("stock.supplier_name", data, { shouldDirty: true })
+                  }
+                  isLoading={isLoadingMetaData}
                 />
               )}
             />
@@ -86,17 +89,20 @@ function StockAttributes({ form }) {
               name="stock.source"
               control={control}
               render={({ field }) => (
-                <ReactSelect
-                  className="react-select-box"
-                  classNamePrefix="react-select"
-                  placeholder="SOURCE"
-                  options={[]}
-                  onChange={field.onChange}
-                  value={field.value}
-                  // onCreateOption={(data) => console.info(data)}
-                  // isLoading={isLoadingCustomer}
-                  // isDisabled={isPaymentDone || isInvoiceSaved}
-                />
+                <>
+                  <ReactSelect
+                    className="react-select-box"
+                    classNamePrefix="react-select"
+                    placeholder="SOURCE"
+                    options={metaData.source}
+                    onInputChange={field.onChange}
+                    onCreateOption={(data) =>
+                      setValue("stock.source", data, { shouldDirty: true })
+                    }
+                    isLoading={isLoadingMetaData}
+                    inputValue={field.value ?? ""}
+                  />
+                </>
               )}
             />
           </Grid>
@@ -112,6 +118,7 @@ const Wrapper = styled.div`
   :last-child {
     padding-bottom: 20px;
     border-bottom: 2px inset #ededed;
+    margin-bottom: 200px;
   }
   &.first {
     border-bottom: 2px inset #ededed;

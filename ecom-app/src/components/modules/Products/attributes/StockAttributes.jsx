@@ -25,7 +25,7 @@ function StockAttributes({ form }) {
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
             <Controller
-              name="stock.quantity_available"
+              name="stock.quantityAvailable"
               control={control}
               rules={{
                 required: "Quantity Available cannot be empty.",
@@ -39,15 +39,15 @@ function StockAttributes({ form }) {
                   variant="filled"
                   autoComplete="off"
                   fullWidth
-                  error={Boolean(errors?.stock?.quantity_available)}
-                  helperText={errors?.stock?.quantity_available?.message}
+                  error={Boolean(errors?.stock?.quantityAvailable)}
+                  helperText={errors?.stock?.quantityAvailable?.message}
                 />
               )}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
             <Controller
-              name="stock.reorder_level"
+              name="stock.reorderLevel"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -64,7 +64,7 @@ function StockAttributes({ form }) {
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
             <Controller
-              name="stock.supplier_name"
+              name="stock.supplierName"
               control={control}
               render={({ field }) => (
                 <ReactSelect
@@ -74,9 +74,12 @@ function StockAttributes({ form }) {
                   options={metaData.supplierName}
                   onChange={field.onChange}
                   value={field.value}
-                  inputValue={field.value ?? ""}
                   onCreateOption={(data) =>
-                    setValue("stock.supplier_name", data, { shouldDirty: true })
+                    setValue(
+                      "stock.supplierName",
+                      { label: data, value: data },
+                      { shouldDirty: true }
+                    )
                   }
                   isLoading={isLoadingMetaData}
                 />
@@ -89,20 +92,24 @@ function StockAttributes({ form }) {
               name="stock.source"
               control={control}
               render={({ field }) => (
-                <>
-                  <ReactSelect
-                    className="react-select-box"
-                    classNamePrefix="react-select"
-                    placeholder="SOURCE"
-                    options={metaData.source}
-                    onInputChange={field.onChange}
-                    onCreateOption={(data) =>
-                      setValue("stock.source", data, { shouldDirty: true })
-                    }
-                    isLoading={isLoadingMetaData}
-                    inputValue={field.value ?? ""}
-                  />
-                </>
+                <ReactSelect
+                  className="react-select-box"
+                  classNamePrefix="react-select"
+                  placeholder="SOURCE"
+                  options={metaData.source}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  isClearable={true}
+                  isSearchable={true}
+                  onCreateOption={(data) =>
+                    setValue(
+                      "stock.source",
+                      { label: data, value: data },
+                      { shouldDirty: true }
+                    )
+                  }
+                  isLoading={isLoadingMetaData}
+                />
               )}
             />
           </Grid>

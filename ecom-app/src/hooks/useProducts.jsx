@@ -12,6 +12,9 @@ const useProducts = ({ fetchStockMetaData = false }) => {
 
   const [lastOptionsHsn, setLastOptionsHsn] = useState([]);
 
+  const sourceArr = [];
+  const supplierNameArr = [];
+
   const { data: { data: { data: meta = [] } = {} } = {}, isLoadingMetaData } =
     useQuery({
       queryKey: [CONSTANTS.QUERY_KEYS.GET_STOCKS_METADATA],
@@ -21,16 +24,21 @@ const useProducts = ({ fetchStockMetaData = false }) => {
 
   useEffect(() => {
     if (meta?.length > 0) {
-      const [arr] = meta.map(({ source, supplierName }) => [
-        [source],
-        [supplierName],
-      ]);
+      meta.forEach(({ source, supplierName }) => {
+        if (source) {
+          sourceArr.push(source);
+        }
+        if (supplierName) {
+          supplierNameArr.push(supplierName);
+        }
+      });
+
       setMetaData({
-        source: [...new Set(arr?.[0] ?? [])].map((val) => ({
+        source: [...new Set(sourceArr ?? [])].map((val) => ({
           label: val,
           value: val,
         })),
-        supplierName: [new Set(arr?.[1] ?? [])].map((val) => ({
+        supplierName: [...new Set(supplierNameArr ?? [])].map((val) => ({
           label: val,
           value: val,
         })),
@@ -57,19 +65,25 @@ const useProducts = ({ fetchStockMetaData = false }) => {
         queryFn: () => productsApi.getProductByIdApi(id),
       });
       const value = data?.data;
-      console.log("🚀 ~ getProductById ~ value:", value);
       if (value?.hsn?.id) {
         setLastOptionsHsn([
           {
-            label: `${value.hsn.hsnCode} - ${value.hsn.hsnDescription}`,
-            value: value.hsn.id,
+            label: `${value?.hsn?.hsnCode ?? ""} - ${
+              value?.hsn?.hsnDescription ?? ""
+            }`,
+            value: value.hsn.id ?? null,
           },
         ]);
       }
       if (value) {
         setValue("barcode", value?.barcode);
         setValue("description", value?.description);
-        setValue("hsnId", value?.hsnId);
+        setValue("hsnId", {
+          label: value?.hsn
+            ? `${value?.hsn?.hsnCode} - ${value?.hsn?.hsnDescription}`
+            : "",
+          value: value?.hsn?.id,
+        });
         setValue("id", value?.id);
         setValue("isActive", value?.isActive);
         setValue("isDeleted", value?.isDeleted);
@@ -80,10 +94,16 @@ const useProducts = ({ fetchStockMetaData = false }) => {
         setValue("hindiName", value?.hindiName);
         setValue("costs", value?.costs);
         setValue("stock", value?.stock);
-        setValue("stock.quantity_available", value?.stock?.quantityAvailable);
-        setValue("stock.reorder_level", value?.stock?.reorderLevel);
-        setValue("stock.supplier_name", value?.stock?.supplierName);
-        setValue("stock.source", value?.stock?.source);
+        setValue("stock.quantityAvailable", value?.stock?.quantityAvailable);
+        setValue("stock.reorderLevel", value?.stock?.reorderLevel);
+        setValue("stock.supplierName", {
+          label: value?.stock?.supplierName,
+          value: value?.stock?.supplierName,
+        });
+        setValue("stock.source", {
+          label: value?.stock?.source,
+          value: value?.stock?.source,
+        });
       }
     } catch (error) {
       console.log("🚀 ~ getProductById ~ error:", error);
@@ -113,23 +133,3 @@ const useProducts = ({ fetchStockMetaData = false }) => {
 };
 
 export default useProducts;
-
-//       costs: [
-//         {
-//           min_qty: "",
-//           max_qty: "",
-//           purchase_cost: "",
-//           cost_for_sell: "",
-//           actual_cost: "",
-//           currency: "INR",
-//           valid_from: "",
-//           valid_to: "",
-//           costId: "",
-//         },
-//       ],
-//       stock: {
-//         quantity_available: "",
-//         reorder_level: "",
-//         supplier_name: null,
-//         source: null,
-//       },

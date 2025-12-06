@@ -7,7 +7,18 @@ import CostAttribute from "./attributes/CostAttribute";
 import StockAttributes from "./attributes/StockAttributes";
 import { useProducts } from "@hooks";
 import { getDirtyFormFields } from "@ecom/ui/utils";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
+import CONSTANTS from "@ecom/ui/constants";
+import { getRole } from "@utils";
+const map = new Map();
+const storage = window?.localStorage;
+
+map.set(
+  CONSTANTS.ROLES_NAME.SUPER_ADMIN,
+  CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN
+);
+map.set(CONSTANTS.ROLES_NAME.ADMIN, CONSTANTS.ROUTE_PATHS.ADMIN.MAIN);
+const roleKey = storage.getItem(CONSTANTS.STORAGE_KEYS.ROLE);
 
 function ProductCreate() {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -25,6 +36,8 @@ function ProductCreate() {
   } = useProducts({
     fetchStockMetaData: false,
   });
+
+  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: {
@@ -53,9 +66,9 @@ function ProductCreate() {
         },
       ],
       stock: {
-        quantity_available: "",
-        reorder_level: "",
-        supplier_name: null,
+        quantityAvailable: "",
+        reorderLevel: "",
+        supplierName: null,
         source: null,
       },
     },
@@ -75,27 +88,35 @@ function ProductCreate() {
 
   const onSubmit = async (data) => {
     const payload = getDirtyFormFields(data, form.formState.dirtyFields);
-    console.log("🚀 ~ onSubmit ~ payload:", payload);
     if (payload?.id) {
     } else {
+      console.log("🚀 ~ onSubmit ~ payload:", payload);
       try {
-        console.info(payload);
         const { data } = await createProduct({
           ...payload,
           id: undefined,
           uuid: undefined,
-          costs: payload.costs.map((val) => ({
+          costs: (payload.costs ?? []).map((val) => ({
             ...val,
             costId: undefined,
             currency: "INR",
           })),
+          stock: {
+            ...payload.stock,
+            source: payload?.stock?.source?.value,
+            supplierName: payload?.stock?.supplierName?.value,
+          },
         });
         form.reset({}, { keepValues: false });
-        console.log("🚀 ~ onSubmit ~ data:", data?.data);
+        navigate(
+          `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${map.get(
+            getRole(roleKey)
+          )}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT}/create?id=${
+            data?.data?.uuid
+          }`
+        );
       } catch (error) {
-        // console.log("🚀 ~ onSubmit ~ error:", error?.response?.data);
-        console.info(error?.response?.data?.validation?.body);
-        console.info(error?.response?.data?.validation?.body?.message);
+        console.log("🚀 ~ onSubmit ~ error:", error);
       }
     }
   };

@@ -4,7 +4,7 @@ import { productsApi } from "@api";
 import CONSTANTS from "@ecom/ui/constants";
 import { useEffect, useMemo, useState } from "react";
 
-const useProducts = ({ fetchStockMetaData = false }) => {
+const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
   const [metaData, setMetaData] = useState({
     source: [],
     supplierName: [],
@@ -21,6 +21,16 @@ const useProducts = ({ fetchStockMetaData = false }) => {
       queryFn: productsApi.getStockMetaData,
       enabled: fetchStockMetaData,
     });
+
+  const { mutateAsync: getAllProductAsync } = useMutation({
+    mutationFn: productsApi.getAllProducts,
+  });
+
+  const { data: { data: { data: count = 0 } = {} } = {} } = useQuery({
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_PRODUCTS_META],
+    queryFn: () => productsApi.getAllProductsMeta(),
+    enabled: fetchProducts,
+  });
 
   useEffect(() => {
     if (meta?.length > 0) {
@@ -112,6 +122,7 @@ const useProducts = ({ fetchStockMetaData = false }) => {
 
   return useMemo(
     () => ({
+      getAllProductAsync,
       metaData,
       isLoadingMetaData,
       createProduct,
@@ -119,8 +130,10 @@ const useProducts = ({ fetchStockMetaData = false }) => {
       getProductById,
       lastOptionsHsn,
       setLastOptionsHsn,
+      count,
     }),
     [
+      getAllProductAsync,
       metaData,
       isLoadingMetaData,
       createProduct,
@@ -128,6 +141,7 @@ const useProducts = ({ fetchStockMetaData = false }) => {
       getProductById,
       lastOptionsHsn,
       setLastOptionsHsn,
+      count,
     ]
   );
 };

@@ -15,6 +15,7 @@ import { hsnsApi } from "@api";
 import { useBarcodeScan } from "@hooks";
 import { useGlobalContext } from "@store";
 import TemplateDialog from "./Template";
+import Barcode from "react-barcode";
 
 function MainAttributes({ form, lastOptions, setLastOptions }) {
   const handlerRef = useRef(false);
@@ -60,8 +61,24 @@ function MainAttributes({ form, lastOptions, setLastOptions }) {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper className="main-comp">
         <Title>Product Attributes</Title>
+        {watch("barcode")?.length > 0 && (
+          <Barcode
+            height={50}
+            width={
+              watch("barcode")?.length > 0
+                ? watch("barcode")?.length < 21
+                  ? 2
+                  : 1
+                : watch("uid")?.length < 21
+                ? 2
+                : 1
+            }
+            value={watch("barcode")}
+            displayValue={false}
+          />
+        )}
       </Wrapper>
       <Wrapper>
         <Grid container spacing={2}>
@@ -232,6 +249,14 @@ function MainAttributes({ form, lastOptions, setLastOptions }) {
               </CheckBoxWrapper>
             </Container>
           </Grid>
+          {/* <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+            <Barcode
+              height={20}
+              width={1}
+              value={watch("barcode")}
+              displayValue={false}
+            />
+          </Grid> */}
         </Grid>
         <Grid container spacing={2} sx={{ mt: "20px" }}>
           <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
@@ -266,6 +291,11 @@ const Wrapper = styled.div`
   :first-of-type {
     border-bottom: 2px inset #ededed;
     margin-bottom: 10px;
+  }
+  &.main-comp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 `;
 

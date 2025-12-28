@@ -10,6 +10,8 @@ import { getDirtyFormFields } from "@ecom/ui/utils";
 import { useNavigate, useSearchParams } from "react-router";
 import CONSTANTS from "@ecom/ui/constants";
 import { getRole } from "@utils";
+import toast from "react-hot-toast";
+
 const map = new Map();
 const storage = window?.localStorage;
 
@@ -33,6 +35,7 @@ function ProductCreate() {
     getProductById,
     lastOptionsHsn,
     setLastOptionsHsn,
+    updateProduct,
   } = useProducts({
     fetchStockMetaData: false,
   });
@@ -68,8 +71,8 @@ function ProductCreate() {
       stock: {
         quantityAvailable: "",
         reorderLevel: "",
-        supplierName: null,
-        source: null,
+        supplierName: "",
+        source: "",
       },
     },
   });
@@ -81,14 +84,78 @@ function ProductCreate() {
 
   useEffect(() => {
     if (productId) {
-      getProductById(productId, form.setValue);
+      getProductById(productId, form);
     }
     return () => {};
   }, [productId]);
 
   const onSubmit = async (data) => {
     const payload = getDirtyFormFields(data, form.formState.dirtyFields);
-    if (payload?.id) {
+
+    if (data?.id) {
+      let costs = payload?.costs;
+      let stock,
+        hsnId = undefined;
+
+      if (
+        payload?.hsnId === "object" &&
+        Object.keys(payload?.hsnId ?? {})?.length
+      ) {
+        hsnId = undefined;
+      }
+      if (Object.keys(payload ?? {}).length > 0) {
+        if (payload?.costs?.length > 0) {
+          costs = (payload?.costs ?? [])
+            ?.map((value, i) => {
+              if (value) {
+                const val = Object.fromEntries(
+                  Object.entries(value ?? {}).map(([key, value]) => [
+                    key,
+                    value?.length === 0 ? undefined : value,
+                  ])
+                );
+                return { ...val, id: data.costs[i].costId, currency: "INR" };
+              }
+            })
+            .filter(Boolean);
+        }
+        if (Object.keys(payload?.stock ?? {})?.length) {
+          stock = {
+            ...payload?.stock,
+            source: payload?.stock?.source?.value ?? undefined,
+            supplierName: payload?.stock?.supplierName?.value ?? undefined,
+          };
+        }
+        let stockFlag = false;
+
+        Object.entries(stock ?? {}).map(([key, value]) => {
+          if (value !== undefined) {
+            stockFlag = true;
+          }
+        });
+        if (!stockFlag) {
+          stock = undefined;
+        }
+
+        const finalPayload = {
+          ...payload,
+          hsnId,
+          costs,
+          stock,
+          id: data?.id,
+        };
+        try {
+          const { data: result } = await updateProduct({ ...finalPayload });
+          if (result.status === CONSTANTS.STATUS.SUCCESS) {
+            form.reset({}, { keepValues: true });
+            await getProductById(productId, form);
+          }
+        } catch (error) {
+          console.log("🚀 ~ onSubmit ~ error:", error);
+        }
+      } else {
+        toast.error("Nothing to update!");
+      }
     } else {
       console.log("🚀 ~ onSubmit ~ payload:", payload);
       try {

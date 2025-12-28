@@ -37,8 +37,8 @@ function CostAttribute({ form, costsForm }) {
         </Button>
       </Wrapper>
 
-      {costFields.map(({ id }, index) => (
-        <Wrapper key={id} className="item">
+      {costFields.map(({ id, costId }, index) => (
+        <Wrapper key={id}>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Controller
@@ -58,6 +58,7 @@ function CostAttribute({ form, costsForm }) {
                     fullWidth
                     error={Boolean(errors?.costs?.[index]?.costForSell)}
                     helperText={errors?.costs?.[index]?.costForSell?.message}
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -80,6 +81,7 @@ function CostAttribute({ form, costsForm }) {
                     fullWidth
                     error={Boolean(errors?.costs?.[index]?.purchaseCost)}
                     helperText={errors?.costs?.[index]?.purchaseCost?.message}
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -97,6 +99,7 @@ function CostAttribute({ form, costsForm }) {
                     variant="filled"
                     autoComplete="off"
                     fullWidth
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -131,6 +134,7 @@ function CostAttribute({ form, costsForm }) {
                     variant="filled"
                     autoComplete="off"
                     fullWidth
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -148,6 +152,7 @@ function CostAttribute({ form, costsForm }) {
                     variant="filled"
                     autoComplete="off"
                     fullWidth
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -165,6 +170,7 @@ function CostAttribute({ form, costsForm }) {
                     variant="filled"
                     autoComplete="off"
                     fullWidth
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -182,6 +188,7 @@ function CostAttribute({ form, costsForm }) {
                     variant="filled"
                     autoComplete="off"
                     fullWidth
+                    disabled={!!costId}
                   />
                 )}
               />
@@ -193,6 +200,7 @@ function CostAttribute({ form, costsForm }) {
                   sx={{ height: "100%" }}
                   onClick={() => remove(index)}
                   fullWidth
+                  disabled={!!costId}
                 >
                   Remove Item
                 </Button>

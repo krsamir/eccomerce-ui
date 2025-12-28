@@ -7,7 +7,9 @@ const productsApi = {};
 productsApi.getStockMetaData = () => axios.get(`${BASE_URL}/stocks-metadata`);
 
 productsApi.createProduct = (payload) => axios.post(`${BASE_URL}`, payload);
+
 productsApi.getProductByIdApi = (id) => axios.get(`${BASE_URL}/${id}`);
+
 productsApi.getAllProducts = (payload) => {
   const { page, filters } = payload;
   const arr = [];
@@ -26,5 +28,7 @@ productsApi.getAllProducts = (payload) => {
 };
 
 productsApi.getAllProductsMeta = () => axios.get(`${BASE_URL}/meta`);
+
+productsApi.updateProduct = (payload) => axios.patch(`${BASE_URL}`, payload);
 
 export default productsApi;

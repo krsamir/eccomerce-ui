@@ -64,9 +64,9 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
 
   const queryClient = useQueryClient();
 
-  const getProductById = async (id, setValue) => {
-    if (!setValue) {
-      console.info("setValue not available");
+  const getProductById = async (id, form) => {
+    if (!(Object.keys(form)?.length > 0)) {
+      console.info("form not available");
     }
 
     try {
@@ -86,39 +86,47 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
         ]);
       }
       if (value) {
-        setValue("barcode", value?.barcode);
-        setValue("description", value?.description);
-        setValue("hsnId", {
-          label: value?.hsn
-            ? `${value?.hsn?.hsnCode} - ${value?.hsn?.hsnDescription}`
-            : "",
-          value: value?.hsn?.id,
-        });
-        setValue("id", value?.id);
-        setValue("isActive", value?.isActive);
-        setValue("isDeleted", value?.isDeleted);
-        setValue("name", value?.name);
-        setValue("unit", value?.unit);
-        setValue("unitType", value?.unitType);
-        setValue("uuid", value?.uuid);
-        setValue("hindiName", value?.hindiName);
-        setValue("costs", value?.costs);
-        setValue("stock", value?.stock);
-        setValue("stock.quantityAvailable", value?.stock?.quantityAvailable);
-        setValue("stock.reorderLevel", value?.stock?.reorderLevel);
-        setValue("stock.supplierName", {
-          label: value?.stock?.supplierName,
-          value: value?.stock?.supplierName,
-        });
-        setValue("stock.source", {
-          label: value?.stock?.source,
-          value: value?.stock?.source,
+        form.reset({
+          barcode: value?.barcode,
+          description: value?.description,
+          hsnId: {
+            label: value?.hsn
+              ? `${value?.hsn?.hsnCode} - ${value?.hsn?.hsnDescription}`
+              : "",
+            value: value?.hsn?.id,
+          },
+          id: value?.uuid,
+          isActive: value?.isActive,
+          isDeleted: value?.isDeleted,
+          name: value?.name,
+          unit: value?.unit,
+          unitType: value?.unitType,
+          uuid: value?.uuid,
+          hindiName: value?.hindiName,
+          costs: value?.costs,
+          stock: {
+            quantityAvailable: value?.stock?.quantityAvailable,
+            reorderLevel: value?.stock?.reorderLevel,
+            supplierName: {
+              label: value?.stock?.supplierName,
+              value: value?.stock?.supplierName,
+            },
+            source: {
+              label: value?.stock?.source,
+              value: value?.stock?.source,
+            },
+          },
         });
       }
     } catch (error) {
       console.log("🚀 ~ getProductById ~ error:", error);
     }
   };
+
+  const { mutateAsync: updateProduct, isPending: isProductUpdationPending } =
+    useMutation({
+      mutationFn: productsApi.updateProduct,
+    });
 
   return useMemo(
     () => ({
@@ -130,6 +138,8 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       getProductById,
       lastOptionsHsn,
       setLastOptionsHsn,
+      updateProduct,
+      isProductUpdationPending,
       count,
     }),
     [
@@ -141,6 +151,8 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       getProductById,
       lastOptionsHsn,
       setLastOptionsHsn,
+      updateProduct,
+      isProductUpdationPending,
       count,
     ]
   );

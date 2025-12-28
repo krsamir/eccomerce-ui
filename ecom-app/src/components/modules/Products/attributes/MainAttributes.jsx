@@ -226,7 +226,13 @@ function MainAttributes({ form, lastOptions, setLastOptions }) {
                     <input
                       type="checkbox"
                       {...field}
-                      onChange={field.onChange}
+                      onChange={(e) => {
+                        // console.info(e.target.checked);
+                        setValue("isActive", e.target.checked, {
+                          shouldDirty: true,
+                        });
+                        // field.onChange(e);
+                      }}
                       checked={field.value}
                     />
                   )}
@@ -241,7 +247,13 @@ function MainAttributes({ form, lastOptions, setLastOptions }) {
                     <input
                       type="checkbox"
                       {...field}
-                      onChange={field.onChange}
+                      onChange={(e) => {
+                        // console.info(e.target.checked);
+                        setValue("isDeleted", e.target.checked, {
+                          shouldDirty: true,
+                        });
+                        // field.onChange(e);
+                      }}
                       checked={field.value}
                     />
                   )}

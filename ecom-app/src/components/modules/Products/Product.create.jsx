@@ -148,7 +148,9 @@ function ProductCreate() {
           const { data: result } = await updateProduct({ ...finalPayload });
           if (result.status === CONSTANTS.STATUS.SUCCESS) {
             form.reset({}, { keepValues: true });
-            await getProductById(productId, form);
+            setTimeout(async () => {
+              await getProductById(productId, form);
+            }, 500);
           }
         } catch (error) {
           console.log("🚀 ~ onSubmit ~ error:", error);
@@ -174,14 +176,16 @@ function ProductCreate() {
             supplierName: payload?.stock?.supplierName?.value,
           },
         });
-        form.reset({}, { keepValues: false });
-        navigate(
-          `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${map.get(
-            getRole(roleKey)
-          )}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT}/create?id=${
-            data?.data?.uuid
-          }`
-        );
+        if (data?.status === CONSTANTS.STATUS.SUCCESS) {
+          form.reset({}, { keepValues: false });
+          navigate(
+            `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${map.get(
+              getRole(roleKey)
+            )}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT}/create?id=${
+              data?.data?.uuid
+            }`
+          );
+        }
       } catch (error) {
         console.log("🚀 ~ onSubmit ~ error:", error);
       }

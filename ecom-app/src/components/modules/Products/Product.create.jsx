@@ -5,6 +5,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import CostAttribute from "./attributes/CostAttribute";
 import StockAttributes from "./attributes/StockAttributes";
+import ImageAttributes from "./attributes/ImageAttributes";
 import { useProducts } from "@hooks";
 import { getDirtyFormFields } from "@ecom/ui/utils";
 import { useNavigate, useSearchParams } from "react-router";
@@ -221,13 +222,14 @@ function ProductCreate() {
             SAVE
           </Button>
           <BottomComponent>
-            <MainAttributes
+            <ImageAttributes form={form} />
+            {/* <MainAttributes
               form={form}
               lastOptions={lastOptionsHsn}
               setLastOptions={setLastOptionsHsn}
             />
             <CostAttribute form={form} costsForm={costsForm} />
-            <StockAttributes form={form} />
+            <StockAttributes form={form} /> */}
           </BottomComponent>
         </MainContainer>
       </form>

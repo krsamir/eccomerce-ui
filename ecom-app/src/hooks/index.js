@@ -7,6 +7,7 @@ import useBarcodeScan from "./helpers/useBarcodeScan";
 import useUnits from "./useUnits";
 import useTemplates from "./useTemplates";
 import useProducts from "./useProducts";
+import useImage from "./useImage";
 
 export {
   useAuthentication,
@@ -18,4 +19,5 @@ export {
   useUnits,
   useTemplates,
   useProducts,
+  useImage,
 };

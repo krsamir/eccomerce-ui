@@ -9,8 +9,7 @@ function bytesToMB(bytes) {
 }
 
 const useImage = () => {
-  const [images, setImages] = useState([]);
-  const [imageUrls, setImageUrls] = useState([]);
+  const [mediaUrls, setMediaUrls] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
 
   const onChange = useCallback((e) => {
@@ -18,7 +17,6 @@ const useImage = () => {
     const urls = [];
     const files = e.target.files;
     [...files].forEach((image, index) => {
-      console.log("🚀 ~ useImage ~ image:", image);
       urls.push({
         url: URL.createObjectURL(image),
         name: image.name,
@@ -26,35 +24,33 @@ const useImage = () => {
         type: image.type,
         kb: bytesToKB(image.size)?.toFixed(2),
         mb: bytesToMB(image.size)?.toFixed(2),
-        index,
+        sequence: index,
+        file: image,
       });
     });
-    setImages([...files]);
-    setImageUrls(urls);
+    setMediaUrls(urls);
   }, []);
 
   const handleDelete = useCallback(
     (index) => {
-      const img = [...images];
-      const urls = [...imageUrls];
-      img.splice(index, 1);
+      const urls = [...mediaUrls];
+      setImageIndex((prev) => (index === 0 ? prev : prev - 1));
       urls.splice(index, 1);
-      setImages(img);
-      setImageUrls(urls);
+      setMediaUrls(urls);
     },
-    [images, imageUrls]
+    [mediaUrls]
   );
 
   return useMemo(
     () => ({
       onChange,
-      images,
-      imageUrls,
+      mediaUrls,
       imageIndex,
       setImageIndex,
       handleDelete,
+      setMediaUrls,
     }),
-    [onChange, images, imageUrls, imageIndex, setImageIndex, handleDelete]
+    [onChange, mediaUrls, imageIndex, setImageIndex, handleDelete, setMediaUrls]
   );
 };
 

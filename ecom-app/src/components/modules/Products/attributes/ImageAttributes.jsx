@@ -17,6 +17,12 @@ const ArrowIndicator = forwardRef(
     );
   }
 );
+const TextBox = ({ left = "", right = "" }) => (
+  <tr>
+    <Left>{left}: </Left>
+    <Right>{right}</Right>
+  </tr>
+);
 
 function ImageAttributes({ form }) {
   const productId = form.watch("uuid");
@@ -25,11 +31,11 @@ function ImageAttributes({ form }) {
 
   const {
     onChange,
-    images,
-    imageUrls,
+    mediaUrls,
     imageIndex,
     setImageIndex,
     handleDelete,
+    setMediaUrls,
   } = useImage();
 
   // useEffect(() => {
@@ -38,39 +44,49 @@ function ImageAttributes({ form }) {
   //   };
   // }, [imageUrls]);
 
+  const dragItem = useRef(null);
+  const dragOverItem = useRef(null);
+
+  const handleDragging = () => {
+    const items = [...mediaUrls];
+    const draggedItemContent = items.splice(dragItem.current, 1)[0];
+    items.splice(dragOverItem.current, 0, draggedItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setMediaUrls(items.map((item, i) => ({ ...item, sequence: i + 1 })));
+  };
+
+  console.info(mediaUrls);
+
   return (
     <>
       <Wrapper className="first">
         <Title>Image Attributes</Title>
+        <Upload htmlFor="file-upload">
+          <FileInput
+            type="file"
+            name="upload"
+            id="file-upload"
+            multiple
+            onChange={onChange}
+          />
+          Browse
+        </Upload>
       </Wrapper>
       <Wrapper>
-        <input
-          type="file"
-          name="upload"
-          id="upload"
-          multiple
-          onChange={onChange}
-        />
-        <pre>
-          {JSON.stringify(
-            { ...imageUrls[imageIndex], url: undefined },
-            null,
-            2
-          )}
-        </pre>
         <ImageWrapper>
           <ArrowIndicator
-            disabled={images?.length < 1}
+            disabled={mediaUrls?.length < 1}
             handleClick={() =>
               setImageIndex((prev) =>
-                prev > 0 ? prev - 1 : images?.length - 1
+                prev > 0 ? prev - 1 : mediaUrls?.length - 1
               )
             }
           />
           <Frame>
-            {imageUrls?.length > 0 ? (
+            {mediaUrls?.length > 0 ? (
               <>
-                <PreviewImage src={imageUrls[imageIndex].url} />
+                <PreviewImage src={mediaUrls?.[imageIndex]?.url} />
                 <Delete>
                   <IconButton onClick={() => handleDelete(imageIndex)}>
                     <DeleteIcon />
@@ -79,7 +95,7 @@ function ImageAttributes({ form }) {
               </>
             ) : (
               <NoImageWrapper>
-                <NoPreviewImageText>No Image Available</NoPreviewImageText>
+                <NoPreviewImageText>No Preview Available</NoPreviewImageText>
               </NoImageWrapper>
             )}
           </Frame>
@@ -87,11 +103,25 @@ function ImageAttributes({ form }) {
             right
             handleClick={() =>
               setImageIndex((prev) =>
-                prev < images?.length - 1 ? prev + 1 : 0
+                prev < mediaUrls?.length - 1 ? prev + 1 : 0
               )
             }
-            disabled={images?.length < 1}
+            disabled={mediaUrls?.length < 1}
           />
+          {mediaUrls?.length > 0 && (
+            <MetaData>
+              <Table>
+                <tbody>
+                  <TextBox left="Name" right={mediaUrls?.[imageIndex]?.name} />
+                  <TextBox left="Type" right={mediaUrls?.[imageIndex]?.type} />
+                  <TextBox
+                    left="Size"
+                    right={`${mediaUrls?.[imageIndex]?.mb} MB, ${mediaUrls?.[imageIndex]?.kb} KB`}
+                  />
+                </tbody>
+              </Table>
+            </MetaData>
+          )}
         </ImageWrapper>
         <BottomImageWrapper>
           <ArrowIndicator
@@ -101,15 +131,25 @@ function ImageAttributes({ form }) {
                 behavior: "smooth",
               })
             }
-            disabled={images?.length < 1}
+            disabled={mediaUrls?.length < 1}
           />
           <FullWidthWrapper ref={pointerRef}>
-            {(imageUrls ?? []).map((item, i) => (
-              <SmallFrame key={i} onClick={() => setImageIndex(i)}>
-                <Image src={item.url} key={i} />
-                <div>{item.name}</div>
-              </SmallFrame>
-            ))}
+            {(mediaUrls ?? [])
+              ?.sort((a, b) => a.sequence - b.sequence)
+              ?.map((item, i) => (
+                <SmallFrame
+                  key={i}
+                  onClick={() => setImageIndex(i)}
+                  draggable
+                  onDragEnd={handleDragging}
+                  onDragStart={() => (dragItem.current = i)}
+                  onDragEnter={() => (dragOverItem.current = i)}
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <UploadStatus>Pending Upload</UploadStatus>
+                  <Image src={item.url} key={i} $isActive={i === imageIndex} />
+                </SmallFrame>
+              ))}
           </FullWidthWrapper>
           <ArrowIndicator
             right
@@ -119,7 +159,7 @@ function ImageAttributes({ form }) {
                 behavior: "smooth",
               });
             }}
-            disabled={images?.length < 1}
+            disabled={mediaUrls?.length < 1}
           />
         </BottomImageWrapper>
       </Wrapper>
@@ -138,11 +178,15 @@ const Wrapper = styled.div`
   &.first {
     border-bottom: 2px inset #ededed;
     margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 `;
 
 const Title = styled.strong`
   font-size: 22px;
+  flex: 1;
 `;
 
 const ImageWrapper = styled.div`
@@ -194,6 +238,7 @@ const Image = styled.img`
   height: 200px;
   width: 200px;
   border-radius: 25px;
+  border: 4px solid ${(props) => (props.$isActive ? "red" : "#fff")};
   cursor: pointer;
 `;
 const NoImageWrapper = styled.div`
@@ -219,4 +264,52 @@ const Delete = styled.div`
   right: -300px;
   bottom: 400px;
 `;
+const FileInput = styled.input`
+  display: none;
+`;
+const Upload = styled.label`
+  background-color: ${(props) => props.theme.p2};
+  color: #fff;
+  padding: 10px 40px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+`;
+
+const MetaData = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+`;
+
+const Left = styled.td`
+  text-align: right;
+  font-weight: 600;
+  font-size: 18px;
+`;
+const Right = styled.td`
+  font-size: 18px;
+`;
+const Table = styled.table`
+  background-color: ${(props) => props.theme.p2};
+  color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  height: 200px;
+  width: 300px;
+`;
+const UploadStatus = styled.span`
+  position: relative;
+  top: 32px;
+  left: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 4px;
+  border-radius: 6px;
+`;
+
 export default ImageAttributes;

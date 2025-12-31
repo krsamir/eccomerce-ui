@@ -56,8 +56,6 @@ function ImageAttributes({ form }) {
     setMediaUrls(items.map((item, i) => ({ ...item, sequence: i + 1 })));
   };
 
-  console.info(mediaUrls);
-
   return (
     <>
       <Wrapper className="first">

@@ -9,6 +9,7 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
     source: [],
     supplierName: [],
   });
+  const [productData, setProductData] = useState({});
 
   const [lastOptionsHsn, setLastOptionsHsn] = useState([]);
 
@@ -75,6 +76,7 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
         queryFn: () => productsApi.getProductByIdApi(id),
       });
       const value = data?.data;
+      setProductData(value);
       if (value?.hsn?.id) {
         setLastOptionsHsn([
           {
@@ -141,6 +143,7 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       updateProduct,
       isProductUpdationPending,
       count,
+      productData,
     }),
     [
       getAllProductAsync,
@@ -154,6 +157,7 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       updateProduct,
       isProductUpdationPending,
       count,
+      productData,
     ]
   );
 };

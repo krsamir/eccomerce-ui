@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import MainAttributes from "./attributes/MainAttributes";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import CostAttribute from "./attributes/CostAttribute";
 import StockAttributes from "./attributes/StockAttributes";
 import ImageAttributes from "./attributes/ImageAttributes";
 import { useProducts } from "@hooks";
-import { getDirtyFormFields } from "@ecom/ui/utils";
+import { getDirtyFormFields, transformToHashString } from "@ecom/ui/utils";
 import { useNavigate, useSearchParams } from "react-router";
 import CONSTANTS from "@ecom/ui/constants";
 import { getRole } from "@utils";
@@ -37,6 +37,7 @@ function ProductCreate() {
     lastOptionsHsn,
     setLastOptionsHsn,
     updateProduct,
+    productData,
   } = useProducts({
     fetchStockMetaData: false,
   });
@@ -195,21 +196,6 @@ function ProductCreate() {
 
   const { handleSubmit } = form;
 
-  // async function hashString(payload) {
-  //   const encoder = new TextEncoder();
-  //   const data = encoder.encode(payload);
-  //   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  //   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  //   const hashHex = hashArray
-  //     .map((b) => b.toString(16).padStart(2, "0"))
-  //     .join("");
-  //   return hashHex;
-  // }
-
-  // useEffect(() => {
-  //   return () => {};
-  // }, []);
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -222,14 +208,14 @@ function ProductCreate() {
             SAVE
           </Button>
           <BottomComponent>
-            <ImageAttributes form={form} />
-            {/* <MainAttributes
+            <MainAttributes
               form={form}
               lastOptions={lastOptionsHsn}
               setLastOptions={setLastOptionsHsn}
             />
             <CostAttribute form={form} costsForm={costsForm} />
-            <StockAttributes form={form} /> */}
+            <StockAttributes form={form} />
+            <ImageAttributes form={form} />
           </BottomComponent>
         </MainContainer>
       </form>

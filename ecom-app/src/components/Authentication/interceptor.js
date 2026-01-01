@@ -9,7 +9,11 @@ const storage = window.localStorage;
 const setupAxiosInterceptors = () => {
   const onRequestSuccess = (config) => {
     const token = storage.getItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN);
-    if (config.data && !config.data?.keepSnakeCase) {
+    if (
+      config.data &&
+      !config.data instanceof FormData &&
+      !config.data?.keepSnakeCase
+    ) {
       config.data = toCamelCase(config.data);
     }
     if (token) {

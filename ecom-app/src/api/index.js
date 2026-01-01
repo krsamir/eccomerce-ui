@@ -7,6 +7,7 @@ import hsnsApi from "./hsns.api";
 import unitsApi from "./units.api";
 import templatesApi from "./templates.api";
 import productsApi from "./products.api";
+import mediaApi from "./media.api";
 
 export {
   authenticationApi,
@@ -18,4 +19,5 @@ export {
   unitsApi,
   templatesApi,
   productsApi,
+  mediaApi,
 };

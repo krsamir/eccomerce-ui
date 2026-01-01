@@ -5,6 +5,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useImage } from "@hooks";
+import { Button } from "@mui/material";
 
 const ArrowIndicator = forwardRef(
   ({ right = false, handleClick = () => {}, disabled = false }, ref) => {
@@ -26,7 +27,6 @@ const TextBox = ({ left = "", right = "" }) => (
 
 function ImageAttributes({ form }) {
   const productId = form.watch("uuid");
-  // console.log("🚀 ~ ImageAttributes ~ productId:", productId);
   const pointerRef = useRef(null);
 
   const {
@@ -36,7 +36,8 @@ function ImageAttributes({ form }) {
     setImageIndex,
     handleDelete,
     setMediaUrls,
-  } = useImage();
+    handleMediaUpload,
+  } = useImage({ productId });
 
   // useEffect(() => {
   //   return () => {
@@ -70,6 +71,9 @@ function ImageAttributes({ form }) {
           />
           Browse
         </Upload>
+        <Button variant="contained" onClick={handleMediaUpload}>
+          Upload
+        </Button>
       </Wrapper>
       <Wrapper>
         <ImageWrapper>
@@ -268,7 +272,7 @@ const FileInput = styled.input`
 const Upload = styled.label`
   background-color: ${(props) => props.theme.p2};
   color: #fff;
-  padding: 10px 40px;
+  padding: 8px 20px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 18px;

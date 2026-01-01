@@ -37,7 +37,6 @@ function ProductCreate() {
     lastOptionsHsn,
     setLastOptionsHsn,
     updateProduct,
-    productData,
   } = useProducts({
     fetchStockMetaData: false,
   });
@@ -208,13 +207,13 @@ function ProductCreate() {
             SAVE
           </Button>
           <BottomComponent>
-            <MainAttributes
+            {/* <MainAttributes
               form={form}
               lastOptions={lastOptionsHsn}
               setLastOptions={setLastOptionsHsn}
             />
             <CostAttribute form={form} costsForm={costsForm} />
-            <StockAttributes form={form} />
+            <StockAttributes form={form} /> */}
             <ImageAttributes form={form} />
           </BottomComponent>
         </MainContainer>

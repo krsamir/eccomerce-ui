@@ -37,6 +37,7 @@ function ImageAttributes({ form }) {
     handleDelete,
     setMediaUrls,
     handleMediaUpload,
+    updateSequence,
   } = useImage({ productId });
 
   // useEffect(() => {
@@ -55,6 +56,10 @@ function ImageAttributes({ form }) {
     dragItem.current = null;
     dragOverItem.current = null;
     setMediaUrls(items.map((item, i) => ({ ...item, sequence: i + 1 })));
+    const payload = items
+      .filter((t) => t?.id)
+      ?.map((it, i) => ({ id: it?.id, sequence: i + 1 }));
+    updateSequence({ payload });
   };
 
   return (

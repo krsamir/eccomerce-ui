@@ -34,6 +34,10 @@ const useImage = ({ productId = "" }) => {
     mutationFn: mediaApi.deleteMediaApi,
   });
 
+  const { mutate: updateSequence } = useMutation({
+    mutationFn: mediaApi.updateSequenceMediaApi,
+  });
+
   const onChange = useCallback(
     (e) => {
       setImageIndex(0);
@@ -89,6 +93,10 @@ const useImage = ({ productId = "" }) => {
         formdata.append("productId", productId);
         await uploadMedia(formdata);
         if (itemsToUpload?.length === i + 1) {
+          const payload = itemsToUpload
+            .filter((t) => t?.id)
+            ?.map((it, i) => ({ id: it?.id, sequence: i + 1 }));
+          updateSequence({ payload });
           queryClient.invalidateQueries({
             queryKey: [
               CONSTANTS.QUERY_KEYS.GET_MEDIA_LIST_BY_PRODUCT_ID,
@@ -129,6 +137,7 @@ const useImage = ({ productId = "" }) => {
       setMediaUrls,
       handleMediaUpload,
       medias,
+      updateSequence,
     }),
     [
       onChange,
@@ -139,6 +148,7 @@ const useImage = ({ productId = "" }) => {
       setMediaUrls,
       handleMediaUpload,
       medias,
+      updateSequence,
     ]
   );
 };

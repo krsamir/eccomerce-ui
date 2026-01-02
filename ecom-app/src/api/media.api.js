@@ -7,5 +7,6 @@ const mediaApi = {};
 mediaApi.uploadMediaApi = (payload) => axios.post(BASE_URL, payload);
 mediaApi.getMediaList = (productId) =>
   axios.get(`${BASE_URL}/list/${productId}`);
+mediaApi.deleteMediaApi = (id) => axios.delete(`${BASE_URL}/${id}`);
 
 export default mediaApi;

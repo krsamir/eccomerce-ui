@@ -20,6 +20,20 @@ const useImage = ({ productId = "" }) => {
 
   const queryClient = useQueryClient();
 
+  const { mutateAsync: uploadMedia } = useMutation({
+    mutationFn: mediaApi.uploadMediaApi,
+  });
+
+  const { data: { data: { data: medias = [] } = {} } = {} } = useQuery({
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_MEDIA_LIST_BY_PRODUCT_ID, productId],
+    queryFn: () => mediaApi.getMediaList(productId),
+    enabled: !!productId,
+  });
+
+  const { mutateAsync: deleteMedia } = useMutation({
+    mutationFn: mediaApi.deleteMediaApi,
+  });
+
   const onChange = useCallback(
     (e) => {
       setImageIndex(0);
@@ -43,18 +57,26 @@ const useImage = ({ productId = "" }) => {
   );
 
   const handleDelete = useCallback(
-    (index) => {
-      const urls = [...mediaUrls];
-      setImageIndex((prev) => (index === 0 ? prev : prev - 1));
-      urls.splice(index, 1);
-      setMediaUrls(urls);
+    async (index) => {
+      try {
+        const urls = [...mediaUrls];
+        const obj = urls[index];
+        if (obj?.id && !obj.file) {
+          await deleteMedia(obj?.id);
+          setImageIndex((prev) => (index === 0 ? prev : prev - 1));
+          urls.splice(index, 1);
+          setMediaUrls(urls);
+        } else {
+          setImageIndex((prev) => (index === 0 ? prev : prev - 1));
+          urls.splice(index, 1);
+          setMediaUrls(urls);
+        }
+      } catch (error) {
+        console.log("🚀 ~ useImage ~ error:", error);
+      }
     },
     [mediaUrls]
   );
-
-  const { mutateAsync: uploadMedia } = useMutation({
-    mutationFn: mediaApi.uploadMediaApi,
-  });
 
   const handleMediaUpload = useCallback(async () => {
     const itemsToUpload = mediaUrls.filter((t) => !t.id);
@@ -80,16 +102,10 @@ const useImage = ({ productId = "" }) => {
     }
   }, [mediaUrls]);
 
-  const { data: { data: { data: medias = [] } = {} } = {} } = useQuery({
-    queryKey: [CONSTANTS.QUERY_KEYS.GET_MEDIA_LIST_BY_PRODUCT_ID, productId],
-    queryFn: () => mediaApi.getMediaList(productId),
-    enabled: !!productId,
-  });
-
   useEffect(() => {
     if (medias?.length > 0) {
       const value = medias.map((item) => ({
-        url: `${IMAGE_URL}/${TOKEN}/${item.path}`,
+        url: `${IMAGE_URL}/${TOKEN}${item.path}`,
         name: item.file_name,
         size: item.size,
         type: item.mime_type,

@@ -148,7 +148,11 @@ function ImageAttributes({ form }) {
                   onDragEnter={() => (dragOverItem.current = i)}
                   onDragOver={(e) => e.preventDefault()}
                 >
-                  <UploadStatus>Pending Upload</UploadStatus>
+                  {item?.id ? (
+                    <UploadStatus>Uploaded</UploadStatus>
+                  ) : (
+                    <UploadStatus>Pending Upload</UploadStatus>
+                  )}
                   <Image src={item.url} key={i} $isActive={i === imageIndex} />
                 </SmallFrame>
               ))}

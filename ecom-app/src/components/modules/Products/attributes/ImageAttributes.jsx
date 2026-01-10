@@ -93,7 +93,10 @@ function ImageAttributes({ form }) {
           <Frame>
             {mediaUrls?.length > 0 ? (
               <>
-                <PreviewImage src={mediaUrls?.[imageIndex]?.url} />
+                <PreviewImage
+                  src={mediaUrls?.[imageIndex]?.url}
+                  loading="lazy"
+                />
                 <Delete>
                   <IconButton onClick={() => handleDelete(imageIndex)}>
                     <DeleteIcon />
@@ -158,7 +161,12 @@ function ImageAttributes({ form }) {
                   ) : (
                     <UploadStatus>Pending Upload</UploadStatus>
                   )}
-                  <Image src={item.url} key={i} $isActive={i === imageIndex} />
+                  <Image
+                    src={item.url}
+                    key={i}
+                    $isActive={i === imageIndex}
+                    loading="lazy"
+                  />
                 </SmallFrame>
               ))}
           </FullWidthWrapper>

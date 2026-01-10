@@ -4,7 +4,13 @@ import { productsApi } from "@api";
 import CONSTANTS from "@ecom/ui/constants";
 import { useEffect, useMemo, useState } from "react";
 
-const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
+const useProducts = ({
+  fetchStockMetaData = false,
+  fetchProducts = false,
+  fetchPublishStatus = false,
+  productId = null,
+}) => {
+  const [product, setProduct] = useState(null);
   const [metaData, setMetaData] = useState({
     source: [],
     supplierName: [],
@@ -75,6 +81,7 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
         queryFn: () => productsApi.getProductByIdApi(id),
       });
       const value = data?.data;
+      setProduct(value);
       if (value?.hsn?.id) {
         setLastOptionsHsn([
           {
@@ -128,6 +135,19 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       mutationFn: productsApi.updateProduct,
     });
 
+  const {
+    data: { data: { data: publishedProduct = null } = {} } = {},
+    refetch,
+  } = useQuery({
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_PUBLISH_PRODUCT_STATUS, productId],
+    queryFn: () => productsApi.getProductPublishStatusByIdApi(productId),
+    enabled: fetchPublishStatus && !!productId,
+  });
+
+  const { mutate: publishProduct } = useMutation({
+    mutationFn: productsApi.initiatePublish,
+  });
+
   return useMemo(
     () => ({
       getAllProductAsync,
@@ -141,6 +161,10 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       updateProduct,
       isProductUpdationPending,
       count,
+      publishedProduct,
+      product,
+      publishProduct,
+      refetch,
     }),
     [
       getAllProductAsync,
@@ -154,6 +178,10 @@ const useProducts = ({ fetchStockMetaData = false, fetchProducts = false }) => {
       updateProduct,
       isProductUpdationPending,
       count,
+      publishedProduct,
+      product,
+      publishProduct,
+      refetch,
     ]
   );
 };

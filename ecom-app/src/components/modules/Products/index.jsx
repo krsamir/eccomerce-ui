@@ -1,7 +1,7 @@
 import CONSTANTS from "@ecom/ui/constants";
 import { useProducts } from "@hooks";
 import { Button } from "@mui/material";
-import { getRole } from "@utils";
+import { getRole, getStatusColor } from "@utils";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
@@ -109,6 +109,13 @@ function Products() {
                       {item.unit} {unitsMap.get(item.unitType)}
                     </Toast>
                   )}
+                  {item.unit && (
+                    <Toast>
+                      <Title>SYNC STATUS: </Title>
+                      <StatusColor $color={getStatusColor(item.status)} />
+                      {item.status}
+                    </Toast>
+                  )}
                 </Container>
               </LeftContainer>
               <RightContainer>
@@ -163,6 +170,7 @@ const Title = styled.span`
   &.main {
     font-size: 16px;
   }
+  margin-right: 5px;
 `;
 const HindiTitle = styled.span`
   font-size: 16px;
@@ -194,4 +202,15 @@ const Toast = styled.div`
   padding: 6px;
   border-radius: 10px;
   margin: 4px 7px 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StatusColor = styled.div`
+  width: 15px;
+  height: 15px;
+  background-color: ${({ $color }) => $color};
+  border-radius: 50%;
+  margin-right: 5px;
 `;

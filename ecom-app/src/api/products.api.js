@@ -2,6 +2,8 @@ import axios from "axios";
 
 const BASE_URL = "/api/product";
 
+const WORKFLOW_BASE_URL = "/api/product/workflow";
+
 const productsApi = {};
 
 productsApi.getStockMetaData = () => axios.get(`${BASE_URL}/stocks-metadata`);
@@ -31,4 +33,9 @@ productsApi.getAllProductsMeta = () => axios.get(`${BASE_URL}/meta`);
 
 productsApi.updateProduct = (payload) => axios.patch(`${BASE_URL}`, payload);
 
+productsApi.getProductPublishStatusByIdApi = (id) =>
+  axios.get(`${WORKFLOW_BASE_URL}/status?id=${id}`);
+
+productsApi.initiatePublish = (id) =>
+  axios.post(`${WORKFLOW_BASE_URL}/publish`, { id });
 export default productsApi;

@@ -1,4 +1,5 @@
 import CONSTANTS from "@ecom/ui/constants";
+export { getConfig, getStatusColor } from "./helper";
 
 export const getRole = () => {
   const storage = window?.localStorage;

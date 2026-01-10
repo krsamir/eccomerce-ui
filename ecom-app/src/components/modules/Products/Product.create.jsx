@@ -10,7 +10,8 @@ import { useProducts } from "@hooks";
 import { getDirtyFormFields, transformToHashString } from "@ecom/ui/utils";
 import { useNavigate, useSearchParams } from "react-router";
 import CONSTANTS from "@ecom/ui/constants";
-import { getRole } from "@utils";
+import { getRole, getStatusColor } from "@utils";
+import SyncIcon from "@mui/icons-material/Sync";
 import toast from "react-hot-toast";
 
 const map = new Map();
@@ -37,10 +38,15 @@ function ProductCreate() {
     lastOptionsHsn,
     setLastOptionsHsn,
     updateProduct,
+    publishedProduct,
+    product,
+    publishProduct,
+    refetch
   } = useProducts({
     fetchStockMetaData: false,
+    fetchPublishStatus: true,
+    productId,
   });
-
   const navigate = useNavigate();
 
   const form = useForm({
@@ -195,17 +201,67 @@ function ProductCreate() {
 
   const { handleSubmit } = form;
 
+  const handleRefresh = async () => {
+    if (productId) {
+      getProductById(productId, form);
+      refetch()
+    }
+  };
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <MainContainer>
-          <Button
-            variant="contained"
-            onClick={() => handleSubmit(onSubmit)()}
-            disabled={isDisabled || isProductCreationPending}
-          >
-            SAVE
-          </Button>
+          <Container>
+            <LeftContainer>
+              {!!product && (
+                <StatusContainer>
+                  <PublishStatus>PUBLISH STATUS: </PublishStatus>
+                  <StatusColor $color={getStatusColor(product?.status)} />
+                  <StatusText>{product?.status}</StatusText>
+                  {!!publishedProduct && (
+                    <StatusText className="small">
+                      {new Date(publishedProduct?.updatedAt).toLocaleString()}
+                    </StatusText>
+                  )}
+                </StatusContainer>
+              )}
+              {!!product && !!publishedProduct && (
+                <StatusContainer>
+                  <PublishStatus>SYNC STATUS: </PublishStatus>
+                  <StatusText>
+                    {publishedProduct?.masterHash === product.masterHash
+                      ? "SYNCED"
+                      : "NOT SYNCED"}
+                  </StatusText>
+                </StatusContainer>
+              )}
+            </LeftContainer>
+            <FlexContainer>
+              <Button
+                variant="contained"
+                disabled={!form.watch("id")}
+                onClick={handleRefresh}
+              >
+                <SyncIcon />
+                Refetch
+              </Button>
+              <Button
+                variant="contained"
+                disabled={!form.watch("id")}
+                onClick={() => publishProduct(form.watch("id"))}
+              >
+                Publish
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => handleSubmit(onSubmit)()}
+                disabled={isDisabled || isProductCreationPending}
+              >
+                SAVE
+              </Button>
+            </FlexContainer>
+          </Container>
+
           <BottomComponent>
             <MainAttributes
               form={form}
@@ -227,7 +283,6 @@ const MainContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: end;
 `;
 
 const BottomComponent = styled.div`
@@ -235,6 +290,46 @@ const BottomComponent = styled.div`
   height: calc(100vh - 200px);
   overflow-y: auto;
   width: 100%;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const LeftContainer = styled.div`
+  flex: 1;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+`;
+
+const PublishStatus = styled.div`
+  font-weight: 700;
+  margin-right: 5px;
+`;
+const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+const StatusColor = styled.div`
+  width: 15px;
+  height: 15px;
+  background-color: ${({ $color }) => $color};
+  border-radius: 50%;
+  margin-right: 5px;
+`;
+const StatusText = styled.div`
+  margin-right: 5px;
+  &.small {
+    font-size: 10px;
+  }
 `;
 
 export default ProductCreate;

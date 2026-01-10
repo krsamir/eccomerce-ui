@@ -2,9 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { mediaApi } from "@api";
 import CONSTANTS from "@ecom/ui/constants";
+import { getConfig } from "@utils";
 
-const IMAGE_URL = `http://localhost:5051/api/media`;
-const TOKEN = `65dbbc603f362ce82b8e7e7572cf3f7c5e70c45894cf7a469d5ac326e6aa932c`;
+const IMAGE_URL = `${getConfig().host}/api/media`;
+const TOKEN = getConfig().token;
 
 function bytesToKB(bytes) {
   return bytes / 1024;

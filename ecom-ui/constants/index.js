@@ -11,6 +11,12 @@ const CONSTANTS_VAL = {
     SUCCESS: 1,
     FAILURE: 0,
   },
+  PRODUCT_WORKFLOW: {
+    INITIALIZED: "INITIALIZED",
+    PENDING: "PENDING",
+    FAILED: "FAILED",
+    COMPLETED: "COMPLETED",
+  },
 };
 
 const ROLE_MAP = new Map();

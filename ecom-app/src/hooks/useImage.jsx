@@ -67,7 +67,7 @@ const useImage = ({ productId = "" }) => {
         const urls = [...mediaUrls];
         const obj = urls[index];
         if (obj?.id && !obj.file) {
-          await deleteMedia(obj?.id);
+          await deleteMedia({ id: obj?.id, productId });
           setImageIndex((prev) => (index === 0 ? prev : prev - 1));
           urls.splice(index, 1);
           setMediaUrls(urls);
@@ -97,7 +97,7 @@ const useImage = ({ productId = "" }) => {
           const payload = itemsToUpload
             .filter((t) => t?.id)
             ?.map((it, i) => ({ id: it?.id, sequence: i + 1 }));
-          updateSequence({ payload });
+          updateSequence({ payload, productId });
           queryClient.invalidateQueries({
             queryKey: [
               CONSTANTS.QUERY_KEYS.GET_MEDIA_LIST_BY_PRODUCT_ID,

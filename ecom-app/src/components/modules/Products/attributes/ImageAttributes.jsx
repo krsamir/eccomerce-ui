@@ -59,7 +59,7 @@ function ImageAttributes({ form }) {
     const payload = items
       .filter((t) => t?.id)
       ?.map((it, i) => ({ id: it?.id, sequence: i + 1 }));
-    updateSequence({ payload });
+    updateSequence({ payload, productId });
   };
 
   return (

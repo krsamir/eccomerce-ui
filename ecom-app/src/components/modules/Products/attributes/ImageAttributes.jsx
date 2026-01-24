@@ -66,17 +66,19 @@ function ImageAttributes({ form }) {
     <>
       <Wrapper className="first">
         <Title>Image Attributes</Title>
-        <Upload htmlFor="file-upload">
+        {
+          productId ? (<Upload htmlFor="file-upload">
           <FileInput
             type="file"
             name="upload"
             id="file-upload"
             multiple
-            onChange={onChange}
+            onChange={!!productId ?  onChange:()=>{}}
           />
           Browse
-        </Upload>
-        <Button variant="contained" onClick={handleMediaUpload}>
+        </Upload>): (<Upload className="disabled">Browse</Upload>)
+        }
+        <Button variant="contained" onClick={handleMediaUpload} disabled={!productId}>
           Upload
         </Button>
       </Wrapper>
@@ -296,6 +298,10 @@ const Upload = styled.label`
   margin-right: 10px;
   cursor: pointer;
   text-transform: uppercase;
+  &.disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
 const MetaData = styled.div`

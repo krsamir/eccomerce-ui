@@ -193,6 +193,11 @@ function CreateCategories() {
                 queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_CATEGORIES],
               });
               reset({}, { keepValues: true });
+              setTimeout(() => {
+                navigate(
+                  `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.CATEGORIES}`,
+                );
+              }, 500);
             }
           },
         });

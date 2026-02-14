@@ -9,6 +9,7 @@ const ROUTES = {
     LOCATION: "location",
     MASTER: "master",
     PRODUCT: "product",
+    CATEGORIES: "categories",
   },
   ADMIN: {
     MAIN: "admin",

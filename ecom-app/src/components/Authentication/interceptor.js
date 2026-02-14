@@ -11,7 +11,7 @@ const setupAxiosInterceptors = () => {
     const token = storage.getItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN);
     if (
       config.data &&
-      !config.data instanceof FormData &&
+      (!config.data) instanceof FormData &&
       !config.data?.keepSnakeCase
     ) {
       config.data = toCamelCase(config.data);
@@ -36,7 +36,10 @@ const setupAxiosInterceptors = () => {
     if (status === 403 || status === 401) {
       (err?.config?.url !== "/auth/login" ||
         err?.config?.url !== "/auth/register") &&
-        toast.error("Please Login Again.", { duration: 3000 });
+        toast.error("Please Login Again.", {
+          duration: 3000,
+          id: "login-again",
+        });
       if (storage.getItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN)) {
         storage.removeItem(CONSTANTS.STORAGE_KEYS.ACCESS_TOKEN);
         storage.removeItem(CONSTANTS.STORAGE_KEYS.ROLE);

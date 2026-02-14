@@ -13,6 +13,7 @@ import CONSTANTS from "@ecom/ui/constants";
 import { getRole, getStatusColor } from "@utils";
 import SyncIcon from "@mui/icons-material/Sync";
 import toast from "react-hot-toast";
+import Categories from "./attributes/Categories";
 
 const map = new Map();
 const storage = window?.localStorage;
@@ -271,6 +272,7 @@ function ProductCreate() {
             <CostAttribute form={form} costsForm={costsForm} />
             <StockAttributes form={form} />
             <ImageAttributes form={form} />
+            <Categories form={form}/>
           </BottomComponent>
         </MainContainer>
       </form>

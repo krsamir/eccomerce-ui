@@ -11,6 +11,7 @@ const initialState = {
   user: null,
   units: [],
   unitsMap: new Map(),
+  categories: [],
 };
 
 // Reducer function
@@ -30,6 +31,8 @@ function globalReducer(state, action) {
       return { ...state, units: action.payload };
     case CONSTANTS.GLOBAL_STORE.SET_UNITS_MAP:
       return { ...state, unitsMap: action.payload };
+    case CONSTANTS.GLOBAL_STORE.SET_CATEGORIES:
+      return { ...state, categories: action.payload };
     default:
       return state;
   }

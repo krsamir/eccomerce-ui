@@ -103,7 +103,7 @@ function CreateMaster() {
 
   const handleNavigation = useCallback(() => {
     navigate(
-      `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}`
+      `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MASTER}`,
     );
   }, [navigate]);
 
@@ -141,7 +141,7 @@ function CreateMaster() {
                 });
               }
             },
-          }
+          },
         );
       }
     })();
@@ -155,7 +155,7 @@ function CreateMaster() {
         name: role?.name,
         value: role?.id,
       })),
-    [state?.roles]
+    [state?.roles],
   );
 
   formSchema[
@@ -166,7 +166,7 @@ function CreateMaster() {
         name: entity?.name,
         value: entity?.id,
       })),
-    [state?.entities]
+    [state?.entities],
   );
 
   formSchema[
@@ -188,7 +188,7 @@ function CreateMaster() {
               clearErrors("userName");
             }
           },
-        }
+        },
       );
     }
   }, [checkUserName, clearErrors, setError, watch]);
@@ -212,7 +212,7 @@ function CreateMaster() {
               clearErrors("email");
             }
           },
-        }
+        },
       );
     }
   }, [checkUserName, clearErrors, setError, watch]);

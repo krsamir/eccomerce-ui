@@ -14,7 +14,7 @@ import {
 const FieldType = ({ type, form, field, errors }) => {
   const checkIsError = useCallback(
     (key) => Object.keys(errors[key] ?? {})?.length > 0,
-    [errors]
+    [errors],
   );
   if (type === "text") {
     return (
@@ -89,7 +89,7 @@ function FormBuilder({ data, controller, errors }) {
                 },
               ],
               null,
-              5
+              5,
             )}
           </pre>
         </div>

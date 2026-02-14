@@ -8,6 +8,8 @@ import useUnits from "./useUnits";
 import useTemplates from "./useTemplates";
 import useProducts from "./useProducts";
 import useImage from "./useImage";
+import useCategories from "./useCategories";
+import useFileHandler from "./useFileHandler";
 
 export {
   useAuthentication,
@@ -20,4 +22,6 @@ export {
   useTemplates,
   useProducts,
   useImage,
+  useCategories,
+  useFileHandler,
 };

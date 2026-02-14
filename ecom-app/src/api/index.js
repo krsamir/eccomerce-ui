@@ -8,6 +8,7 @@ import unitsApi from "./units.api";
 import templatesApi from "./templates.api";
 import productsApi from "./products.api";
 import mediaApi from "./media.api";
+import categoriesApi from "./categories.api";
 
 export {
   authenticationApi,
@@ -20,4 +21,5 @@ export {
   templatesApi,
   productsApi,
   mediaApi,
+  categoriesApi,
 };

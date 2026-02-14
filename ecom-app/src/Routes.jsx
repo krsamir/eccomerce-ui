@@ -16,6 +16,10 @@ const Master = lazy(() => import("@modules/Master"));
 const Products = lazy(() => import("@modules/Products"));
 const CreateMaster = lazy(() => import("@modules/Master/CreateMaster"));
 const ProductsCreate = lazy(() => import("@modules/Products/Product.create"));
+const Categories = lazy(() => import("@modules/Categories"));
+const CreateCategories = lazy(
+  () => import("@modules/Categories/CreateCategories"),
+);
 
 const UserHome = lazy(() => import("@user").then((m) => ({ default: m.Home })));
 
@@ -73,6 +77,26 @@ const router = createBrowserRouter([
                 hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
               >
                 <Master />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.CATEGORIES}`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <Categories />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.CATEGORIES}/create`,
+            element: (
+              <ProtectedRoute
+                hasAuthority={[getRoleById(CONSTANTS.ROLES_NAME.SUPER_ADMIN)]}
+              >
+                <CreateCategories />
               </ProtectedRoute>
             ),
           },

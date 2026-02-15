@@ -43,6 +43,10 @@ const useCategories = ({ id = "", enabled = false }) => {
   const { mutateAsync: deleteMedia } = useMutation({
     mutationFn: (payload) => categoriesApi.deleteMediaApi(payload),
   });
+
+  const { mutate: sync } = useMutation({
+    mutationFn: () => categoriesApi.syncCategories(),
+  });
   return useMemo(
     () => ({
       categories,
@@ -51,6 +55,7 @@ const useCategories = ({ id = "", enabled = false }) => {
       updateCategory,
       uploadMedia,
       deleteMedia,
+      sync,
     }),
     [
       categories,
@@ -59,6 +64,7 @@ const useCategories = ({ id = "", enabled = false }) => {
       updateCategory,
       uploadMedia,
       deleteMedia,
+      sync,
     ],
   );
 };

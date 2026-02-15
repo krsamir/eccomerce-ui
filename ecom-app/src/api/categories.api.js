@@ -19,4 +19,6 @@ categoriesApi.uploadMediaApi = (payload) =>
 categoriesApi.deleteMediaApi = (payload) =>
   axios.delete(`${BASE_URL}/media/${payload?.id}`);
 
+categoriesApi.syncCategories = () => axios.post(`${BASE_URL}/sync`);
+
 export default categoriesApi;

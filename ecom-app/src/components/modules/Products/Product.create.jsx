@@ -20,7 +20,7 @@ const storage = window?.localStorage;
 
 map.set(
   CONSTANTS.ROLES_NAME.SUPER_ADMIN,
-  CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN
+  CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.MAIN,
 );
 map.set(CONSTANTS.ROLES_NAME.ADMIN, CONSTANTS.ROUTE_PATHS.ADMIN.MAIN);
 const roleKey = storage.getItem(CONSTANTS.STORAGE_KEYS.ROLE);
@@ -42,7 +42,7 @@ function ProductCreate() {
     publishedProduct,
     product,
     publishProduct,
-    refetch
+    refetch,
   } = useProducts({
     fetchStockMetaData: false,
     fetchPublishStatus: true,
@@ -120,7 +120,7 @@ function ProductCreate() {
                   Object.entries(value ?? {}).map(([key, value]) => [
                     key,
                     value?.length === 0 ? undefined : value,
-                  ])
+                  ]),
                 );
                 return { ...val, id: data.costs[i].costId, currency: "INR" };
               }
@@ -188,10 +188,10 @@ function ProductCreate() {
           form.reset({}, { keepValues: false });
           navigate(
             `${CONSTANTS.ROUTE_PATHS.ADMINISTRATION}/${map.get(
-              getRole(roleKey)
+              getRole(roleKey),
             )}/${CONSTANTS.ROUTE_PATHS.SUPER_ADMIN.PRODUCT}/create?id=${
               data?.data?.uuid
-            }`
+            }`,
           );
         }
       } catch (error) {
@@ -205,7 +205,7 @@ function ProductCreate() {
   const handleRefresh = async () => {
     if (productId) {
       getProductById(productId, form);
-      refetch()
+      refetch();
     }
   };
   return (
@@ -235,6 +235,9 @@ function ProductCreate() {
                       : "NOT SYNCED"}
                   </StatusText>
                 </StatusContainer>
+              )}
+              {publishedProduct?.masterHash?.length > 0 && (
+                <HashText>{publishedProduct?.masterHash}</HashText>
               )}
             </LeftContainer>
             <FlexContainer>
@@ -272,7 +275,7 @@ function ProductCreate() {
             <CostAttribute form={form} costsForm={costsForm} />
             <StockAttributes form={form} />
             <ImageAttributes form={form} />
-            <Categories form={form}/>
+            <Categories form={form} />
           </BottomComponent>
         </MainContainer>
       </form>
@@ -332,6 +335,10 @@ const StatusText = styled.div`
   &.small {
     font-size: 10px;
   }
+`;
+const HashText = styled.div`
+  font-size: 12px;
+  padding: 5px 0;
 `;
 
 export default ProductCreate;

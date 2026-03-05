@@ -21,12 +21,16 @@ const CreateCategories = lazy(
   () => import("@modules/Categories/CreateCategories"),
 );
 
-const UserHome = lazy(() => import("@user").then((m) => ({ default: m.Home })));
+// const UserHome = lazy(() => import("@user").then((m) => ({ default: m.Home })));
 
 const router = createBrowserRouter([
   {
     path: CONSTANTS.ROUTE_PATHS.HOME,
-    element: <UserHome />,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
   },
   {
     path: CONSTANTS.ROUTE_PATHS.ADMINISTRATION,

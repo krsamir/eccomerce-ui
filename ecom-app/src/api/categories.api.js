@@ -21,4 +21,12 @@ categoriesApi.deleteMediaApi = (payload) =>
 
 categoriesApi.syncCategories = () => axios.post(`${BASE_URL}/sync`);
 
+categoriesApi.getAllCategoriesByStepsApi = () => axios.get(`${BASE_URL}/steps`);
+
+categoriesApi.addCategoriesToMapperApi = (payload) =>
+  axios.post(`${BASE_URL}/add-category`, payload);
+
+categoriesApi.getCategoryoMapperApi = (payload) =>
+  axios.get(`${BASE_URL}/mapper/${payload}`);
+
 export default categoriesApi;

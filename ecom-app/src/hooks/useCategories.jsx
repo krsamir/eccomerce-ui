@@ -5,7 +5,12 @@ import CONSTANTS from "@ecom/ui/constants";
 import { useEffect, useMemo } from "react";
 import { useGlobalContext } from "@store";
 
-const useCategories = ({ id = "", enabled = false }) => {
+const useCategories = ({
+  id = "",
+  enabled = false,
+  isSteps = false,
+  productIdMapper = "",
+}) => {
   const { dispatch } = useGlobalContext();
   const { data: { data: { data: categories = [] } = {} } = {} } = useQuery({
     queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_CATEGORIES],
@@ -47,6 +52,24 @@ const useCategories = ({ id = "", enabled = false }) => {
   const { mutate: sync } = useMutation({
     mutationFn: () => categoriesApi.syncCategories(),
   });
+
+  const { data: { data: { data: getStepsCategories = [] } = {} } = {} } =
+    useQuery({
+      queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_CATEGORIES_STEPS],
+      queryFn: () => categoriesApi.getAllCategoriesByStepsApi(),
+      enabled: isSteps,
+    });
+
+  const { mutateAsync: addCategoriesToMapper } = useMutation({
+    mutationFn: (payload) => categoriesApi.addCategoriesToMapperApi(payload),
+  });
+
+  const { data: { data: { data: categoryMapper = [] } = {} } = {} } = useQuery({
+    queryKey: [CONSTANTS.QUERY_KEYS.GET_ALL_CATEGORIES_MAPPER, productIdMapper],
+    queryFn: () => categoriesApi.getCategoryoMapperApi(productIdMapper),
+    enabled: !!productIdMapper,
+  });
+
   return useMemo(
     () => ({
       categories,
@@ -56,6 +79,9 @@ const useCategories = ({ id = "", enabled = false }) => {
       uploadMedia,
       deleteMedia,
       sync,
+      getStepsCategories,
+      addCategoriesToMapper,
+      categoryMapper,
     }),
     [
       categories,
@@ -65,6 +91,9 @@ const useCategories = ({ id = "", enabled = false }) => {
       uploadMedia,
       deleteMedia,
       sync,
+      getStepsCategories,
+      addCategoriesToMapper,
+      categoryMapper,
     ],
   );
 };

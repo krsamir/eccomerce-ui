@@ -10,6 +10,8 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import styled from "@emotion/styled";
+import { useCategories } from "@hooks";
+import { useEffect } from "react";
 
 function not(a, b) {
   return a.filter((value) => !b.includes(value));
@@ -24,11 +26,20 @@ function union(a, b) {
 }
 
 export default function Categories({ form }) {
-  console.info(form.watch("uuid"));
+  const { getStepsCategories } = useCategories({ isSteps: true });
+
+  // console.info(form.watch("uuid"));
 
   const [checked, setChecked] = React.useState([]);
-  const [left, setLeft] = React.useState([0, 1, 2, 3]);
-  const [right, setRight] = React.useState([4, 5, 6, 7]);
+  const [left, setLeft] = React.useState([]);
+
+  useEffect(() => {
+    if (getStepsCategories?.length > 0) {
+      setLeft(getStepsCategories);
+    }
+  }, [getStepsCategories]);
+
+  const [right, setRight] = React.useState([]);
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -101,25 +112,40 @@ export default function Categories({ form }) {
         role="list"
       >
         {items.map((value) => {
-          const labelId = `transfer-list-all-item-${value}-label`;
-
+          const labelId = `transfer-list-all-item-${value.id}-label`;
           return (
             <ListItemButton
-              key={value}
+              key={value.id}
               role="listitem"
-              onClick={handleToggle(value)}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+              // onClick={handleToggle(value)}
             >
-              <ListItemIcon>
-                <Checkbox
-                  checked={checked.includes(value)}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{
-                    "aria-labelledby": labelId,
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={`List item ${value + 1}`} />
+              <ListItemText id={labelId} primary={value?.name} />
+              {(value.children ?? []).map((v) => {
+                return (
+                  <ListItemButton
+                    key={v.id}
+                    role="listitem"
+                    onClick={handleToggle(v)}
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        checked={checked.includes(v)}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{
+                          "aria-labelledby": labelId,
+                        }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText id={labelId} primary={v?.name} />
+                  </ListItemButton>
+                );
+              })}
             </ListItemButton>
           );
         })}

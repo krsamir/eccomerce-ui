@@ -22,13 +22,15 @@ const LeftContainer = styled.div`
   width: 250px;
   background-color: rgb(247, 247, 247);
   border-radius: 6px;
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 `;
 const RightContainer = styled.div`
   padding: 20px;
   width: calc(100vw - 250px);
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* flex: 7; */
 `;
 
@@ -58,7 +60,7 @@ function Home() {
               <CardWrapper key={id}>
                 <Card onClick={() => navigate(route)}>{name}</Card>
               </CardWrapper>
-            )
+            ),
           )}
         </LeftContainer>
         <RightContainer>
